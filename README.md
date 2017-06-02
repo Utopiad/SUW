@@ -8,4 +8,4 @@ For this, we need to :
 2. Then you'll need to [set up your own phone](https://facebook.github.io/react-native/docs/running-on-device.html) in order to enable the **developer** mode.
 
 3. Finally, when you'll build the project on your Android phone, you'll need to [create a file](https://stackoverflow.com/a/32640154/4578919) in the **Android** folder to allow the system to find the SDK.
-Please note that this file refers to one of your files, so it's ignored by Git.
+*Please note that this file refers to one of your files, so it's ignored by Git.*
