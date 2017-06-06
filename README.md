@@ -9,6 +9,7 @@ For this, we need to :
 Exemple: For *Marshmallow*, it's *23*
 3. Lunch Android studio
 4. Click on `Configure > SDK Manager`
+5. `npm install -g react-native-cli`
 5. Install the right package related to your API code found above
 6. [Download and set ADB and Fastboot](http://www.teamandroid.com/2016/10/22/how-to-install-adb-fastboot-mac-osx/)
 Or install them with Android studio (SDK Build-tools, SDK Tools, HAXM)
