@@ -1,11 +1,25 @@
 import React, {Component} from 'react';
 import {
-  Stylesheet,
+  StyleSheet,
   View,
   Text
 } from 'react-native';
 
-export default class mapView extends Component {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#611C35',
+    alignItems: 'center'
+  },
+  heading: {
+    fontSize: 24,
+    color: '#2EC4B6',
+    alignItems: 'center'
+  }
+});
+
+export default class MapView extends Component {
   constructor(props) {
     super(props);
 
@@ -16,8 +30,8 @@ export default class mapView extends Component {
 
   render() {
     return(
-      <View>
-        <Text>mapView</Text>
+      <View style={styles.container}>
+        <Text style={styles.heading}>MapView</Text>
       </View>
     )
   }

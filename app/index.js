@@ -5,28 +5,22 @@ import {
   Text,
   View
 } from 'react-native';
-import {Router, Scene} from 'react-native-router-flux';
+// import {Router, Scene} from 'react-native-router-flux';
+import Swiper from 'react-native-swiper';
 
-import mapView from './views/mapView';
-import cameraView from './views/cameraView';
+import MapView from './views/mapView';
+import CameraView from './views/cameraView';
 
 export default class App extends Component {
   render() {
     return (
-      <Router>
-        <Scene key="root">
-
-          <Scene
-            key="mapView"
-            component={mapView}
-            title="Home View"
-            initial />
-          <Scene
-            key="cameraView"
-            component={cameraView}
-            title="Camera" />
-        </Scene>
-      </Router>
+      <Swiper
+        loop={false}
+        showsPagination={false}
+        index={1} >
+        <MapView />
+        <CameraView />
+      </Swiper>
     );
   }
 }
