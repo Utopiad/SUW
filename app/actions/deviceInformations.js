@@ -14,8 +14,8 @@ export default class DeviceInformations {
     this.timeZone = DeviceInfo.getTimezone();
     this.isTablet = DeviceInfo.isTablet() | false;
   }
-  retrie(e) {
-    switch(e) {
+  retry(prop) {
+    switch(prop) {
       case uuid:
         this.uuid = DeviceInfo.getUniqueID();
         break;
@@ -47,20 +47,20 @@ export default class DeviceInformations {
         this.timeZone = DeviceInfo.getTimezone();
         break;
       case isTablet:
-        this.country = DeviceInfo.isTablet();
+        this.isTablet = DeviceInfo.isTablet();
         break;
       default:
         this.uuid = DeviceInfo.getUniqueID();
         this.manufacturer = DeviceInfo.getManufacturer();
         this.brand = DeviceInfo.getBrand();
         this.model = DeviceInfo.getModel();
-        this.os = DeviceInfo.	getSystemName();
+        this.os = DeviceInfo.getSystemName();
         this.osVersion = DeviceInfo.getSystemVersion();
         this.buildNumber = DeviceInfo.getBuildNumber();
         this.localLang = DeviceInfo.getDeviceLocale();
         this.country = DeviceInfo.getDeviceCountry();
         this.timeZone = DeviceInfo.getTimezone();
-        this.isTablet = DeviceInfo.isTablet() | false;
+        this.isTablet = DeviceInfo.isTablet() || false;
     }
 
   }
