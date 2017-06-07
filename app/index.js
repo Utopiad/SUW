@@ -5,29 +5,42 @@ import {
   Text,
   View
 } from 'react-native';
+import {Router, Scene} from 'react-native-router-flux';
+
+import mapView from './views/mapView';
+import cameraView from './views/cameraView';
 
 export default class App extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Hello Suckers!
-        </Text>
-      </View>
+      <Router>
+        <Scene key="root">
+
+          <Scene
+            key="mapView"
+            component={mapView}
+            title="Home View"
+            initial />
+          <Scene
+            key="cameraView"
+            component={cameraView}
+            title="Camera" />
+        </Scene>
+      </Router>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     backgroundColor: '#F5FCFF',
+//   },
+//   welcome: {
+//     fontSize: 20,
+//     textAlign: 'center',
+//     margin: 10,
+//   },
+// });
