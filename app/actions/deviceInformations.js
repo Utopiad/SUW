@@ -6,7 +6,7 @@ export default class DeviceInformations {
     this.manufacturer = DeviceInfo.getManufacturer();
     this.brand = DeviceInfo.getBrand();
     this.model = DeviceInfo.getModel();
-    this.os = DeviceInfo.	getSystemName();
+    this.os = DeviceInfo.getSystemName();
     this.osVersion = DeviceInfo.getSystemVersion();
     this.buildNumber = DeviceInfo.getBuildNumber();
     this.localLang = DeviceInfo.getDeviceLocale();
