@@ -5,10 +5,9 @@ import {
   Text
 } from 'react-native';
 
-// Importing deviceInformations class
 import DeviceInformations from '../actions/deviceInformations';
-// Calling deviceInformations instance
-var deviceInformations = new DeviceInformations();
+
+const deviceInformations = new DeviceInformations();
 
 const styles = StyleSheet.create({
   container: {

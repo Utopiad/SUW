@@ -12,7 +12,7 @@ export default class DeviceInformations {
     this.localLang = DeviceInfo.getDeviceLocale();
     this.country = DeviceInfo.getDeviceCountry();
     this.timeZone = DeviceInfo.getTimezone();
-    this.isTablet = DeviceInfo.isTablet() | false;
+    this.isTablet = DeviceInfo.isTablet() || false;
   }
   retry(prop) {
     switch(prop) {
