@@ -10,6 +10,7 @@ import Swiper from 'react-native-swiper';
 
 import MapView from './views/mapView';
 import CameraView from './views/cameraView';
+import DeviceView from './views/deviceView';
 
 export default class App extends Component {
   render() {
@@ -17,9 +18,10 @@ export default class App extends Component {
       <Swiper
         loop={false}
         showsPagination={false}
-        index={1} >
+        index={0} >
         <MapView />
         <CameraView />
+        <DeviceView />
       </Swiper>
     );
   }
