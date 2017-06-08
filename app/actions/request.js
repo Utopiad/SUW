@@ -9,6 +9,7 @@ const _API_URL = {
 export default function requestAPI(route, method, data) {
   let r, m, d;
   r = _API_URL.protocol + _API_URL.ip + _API_URL.port;
+  d = JSON.stringify(data);
 
   if (route === "login") {
     r = r + _API_URL.route.login;
@@ -30,6 +31,6 @@ export default function requestAPI(route, method, data) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
+    body: d
   })
 }
