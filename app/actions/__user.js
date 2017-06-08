@@ -92,15 +92,15 @@ const getInfo = (onSuccess, onError) => {
     const devInfo = {
       uuid:         DeviceInfo.getUniqueID(),
       manufacturer: DeviceInfo.getManufacturer(),
+      system:       DeviceInfo.getSystemName(),
       brand:        DeviceInfo.getBrand(),
       model:        DeviceInfo.getModel(),
-      os:           DeviceInfo.getSystemName(),
-      osVersion:    DeviceInfo.getSystemVersion(),
-      buildNumber:  DeviceInfo.getBuildNumber(),
-      localLang:    DeviceInfo.getDeviceLocale(),
+      os_version:    DeviceInfo.getSystemVersion(),
+      build_number:  DeviceInfo.getBuildNumber(),
+      local:        DeviceInfo.getDeviceLocale(),
       country:      DeviceInfo.getDeviceCountry(),
-      timeZone:     DeviceInfo.getTimezone(),
-      isTablet:     DeviceInfo.isTablet() || false
+      timezone:     DeviceInfo.getTimezone(),
+      is_tablet:     DeviceInfo.isTablet() || false
     }
 
     onSuccess(devInfo);
@@ -111,12 +111,29 @@ const getInfo = (onSuccess, onError) => {
 
 const pushAllToLouis = (devInfo, position) => {
   return (dispatch) => {
-    return Axios.post(apiUrlouis, {devInfo, position})
-      .then(() => {
-        dispatch({type: USER_PUSH_SUCCESS});
-      }).catch(error => {
-        dispatch({type: USER_PUSH_FAILURE});
-      })
+    // console.log('-------- devInfo: ');
+    // console.log(devInfo);
+    // console.log('--------');
+    devInfo.latitude = position.latitude;
+    devInfo.longitude = position.longitude;
+
+    const data = JSON.stringify(devInfo);
+    // console.log('-------- data: ');
+    // console.log(data);
+    // console.log('--------');
+    return fetch(apiUrlouis, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: data
+    }).then((response) => {
+
+      dispatch({type: USER_PUSH_SUCCESS});
+    }).catch(error => {
+
+      dispatch({type: USER_PUSH_FAILURE});
+    });
   }
 }
 
