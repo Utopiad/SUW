@@ -6,62 +6,90 @@ export default class DeviceInformations {
     this.manufacturer = DeviceInfo.getManufacturer();
     this.brand = DeviceInfo.getBrand();
     this.model = DeviceInfo.getModel();
-    this.os = DeviceInfo.getSystemName();
-    this.osVersion = DeviceInfo.getSystemVersion();
-    this.buildNumber = DeviceInfo.getBuildNumber();
-    this.localLang = DeviceInfo.getDeviceLocale();
-    this.country = DeviceInfo.getDeviceCountry();
-    this.timeZone = DeviceInfo.getTimezone();
-    this.isTablet = DeviceInfo.isTablet() || false;
+    this.system = DeviceInfo.getSystemName();
+    this.os_version = DeviceInfo.getSystemVersion();
+    this.build_number = DeviceInfo.getBuildNumber();
+    this.local = DeviceInfo.getDeviceLocale();
+    this.timezone = DeviceInfo.getTimezone();
+    this.is_tablet = DeviceInfo.isTablet();
+    this.getGeolocation();
   }
+
+  getGeolocation() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.longitude = position.coords.longitude;
+        this.latitude = position.coords.latitude;
+        // this.accuracy = position.coords.accuracy;
+      }
+    );
+  }
+
   retry(prop) {
     switch(prop) {
-      case uuid:
+      case "uuid":
         this.uuid = DeviceInfo.getUniqueID();
         break;
-      case manufacturer:
+      case "manufacturer":
         this.manufacturer = DeviceInfo.getManufacturer();
         break;
-      case brand:
+      case "brand":
         this.brand = DeviceInfo.getBrand();
         break;
-      case model:
+      case "model":
         this.model = DeviceInfo.getModel();
         break;
-      case os:
-        this.os = DeviceInfo.getSystemName();
+      case "system":
+        this.system = DeviceInfo.getSystemName();
         break;
-      case osVersion:
-        this.osVersion = DeviceInfo.getSystemVersion();
+      case "os_version":
+        this.os_version = DeviceInfo.getSystemVersion();
         break;
-      case buildNumber:
-        this.buildNumber = DeviceInfo.getBuildNumber();
+      case "build_number":
+        this.build_number = DeviceInfo.getBuildNumber();
         break;
-      case localLang:
-        this.localLang = DeviceInfo.getDeviceLocale();
+      case "local":
+        this.local = DeviceInfo.getDeviceLocale();
         break;
-      case country:
-        this.country = DeviceInfo.getDeviceCountry();
+      case "timezone":
+        this.timezone = DeviceInfo.getTimezone();
         break;
-      case timeZone:
-        this.timeZone = DeviceInfo.getTimezone();
+      case "is_tablet":
+        this.is_tablet = DeviceInfo.isTablet();
         break;
-      case isTablet:
-        this.isTablet = DeviceInfo.isTablet();
+      case "geo":
+        this.getGeolocation();
         break;
       default:
         this.uuid = DeviceInfo.getUniqueID();
         this.manufacturer = DeviceInfo.getManufacturer();
         this.brand = DeviceInfo.getBrand();
         this.model = DeviceInfo.getModel();
-        this.os = DeviceInfo.getSystemName();
-        this.osVersion = DeviceInfo.getSystemVersion();
-        this.buildNumber = DeviceInfo.getBuildNumber();
-        this.localLang = DeviceInfo.getDeviceLocale();
-        this.country = DeviceInfo.getDeviceCountry();
-        this.timeZone = DeviceInfo.getTimezone();
-        this.isTablet = DeviceInfo.isTablet() || false;
+        this.system = DeviceInfo.getSystemName();
+        this.os_version = DeviceInfo.getSystemVersion();
+        this.build_number = DeviceInfo.getBuildNumber();
+        this.local = DeviceInfo.getDeviceLocale();
+        this.timezone = DeviceInfo.getTimezone();
+        this.is_tablet = DeviceInfo.isTablet();
+        this.getGeolocation();
     }
+  }
 
+  toJSON() {
+    return {
+      uuid: this.uuid,
+      manufacturer: this.manufacturer,
+      brand: this.brand,
+      model: this.model,
+      system: this.system,
+      os_version: this.os_version,
+      build_number: this.build_number,
+      local: this.local,
+      timezone: this.timezone,
+      is_tablet: this.is_tablet,
+      // accuracy: this.accuracy,
+      longitude: this.longitude,
+      latitude: this.latitude
+    }
   }
 }
