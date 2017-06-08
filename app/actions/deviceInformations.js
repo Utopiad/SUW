@@ -20,8 +20,8 @@ export default class DeviceInformations {
       (position) => {
         this.longitude = position.coords.longitude;
         this.latitude = position.coords.latitude;
+        // this.accuracy = position.coords.accuracy;
       }
-      // (error) => this.setState({ error: error.message })
     );
   }
 
@@ -87,6 +87,7 @@ export default class DeviceInformations {
       local: this.local,
       timezone: this.timezone,
       is_tablet: this.is_tablet,
+      // accuracy: this.accuracy,
       longitude: this.longitude,
       latitude: this.latitude
     }

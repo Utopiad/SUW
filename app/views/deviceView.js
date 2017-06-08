@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import DeviceInformations from '../actions/deviceInformations';
+import requestAPI from '../actions/request.js';
 
 var deviceInformations = new DeviceInformations();
 
@@ -36,17 +37,12 @@ export default class DeviceView extends Component {
   }
 
   request() {
-      fetch('http://163.172.29.197:3000/login', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(deviceInformations.toJSON())
-      })
+      requestAPI("login", "POST", deviceInformations.toJSON())
       .then(response => {
-        this.state.apiCount++
-        return this.state.apiResponse = response.status;
+        return this.setState({
+          apiResponse: response.status,
+          apiCount: this.state.apiCount + 1
+        })
       })
       .catch (error => {
         return this.state.apiResponse = "fetch failed:" + error;
