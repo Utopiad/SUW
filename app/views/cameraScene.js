@@ -9,17 +9,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#611C35',
+    backgroundColor: '#2EC4B6',
     alignItems: 'center'
   },
   heading: {
     fontSize: 24,
-    color: '#2EC4B6',
+    color: '#2E5077',
     alignItems: 'center'
   }
 });
 
-export default class MapView extends Component {
+export default class CameraScene extends Component {
   constructor(props) {
     super(props);
 
@@ -28,10 +28,17 @@ export default class MapView extends Component {
     };
   }
 
+  // componentWillMount() {
+  //   this.setState(state => ({
+  //     ...state,
+  //     isLoading: true
+  //   }));
+  // }
+
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.heading}>MapView</Text>
+        <Text style={styles.heading}>CameraView !</Text>
       </View>
     )
   }
