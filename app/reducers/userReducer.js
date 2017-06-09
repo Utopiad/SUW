@@ -19,22 +19,22 @@ export const userReducer = (state = {
     manufacturer: '',
     brand:        '',
     model:        '',
-    os:           '',
-    osVersion:    '',
-    buildNumber:  '',
-    localLang:    '',
+    system:       '',
+    os_version:   '',
+    build_number: '',
+    local:        '',
     country:      '',
-    timeZone:     '',
-    isTablet:     ''
+    timezone:     '',
+    is_tablet:    ''
   },
   isSearching: false,
   position: {
-    longitude: 0,
-    latitude: 0,
-    accuracy: 0,
-    altitude: 0,
-    speed: 0,
-    timestamp: 0
+    longitude:    0,
+    latitude:     0,
+    accuracy:     0,
+    altitude:     0,
+    speed:        0,
+    timestamp:    0
   }
 }, action) => {
   switch(action.type) {
@@ -56,13 +56,13 @@ export const userReducer = (state = {
           manufacturer: action.profile.manufacturer,
           brand:        action.profile.brand,
           model:        action.profile.model,
-          os:           action.profile.os,
-          osVersion:    action.profile.osVersion,
-          buildNumber:  action.profile.buildNumber,
-          localLang:    action.profile.localLang,
+          system:       action.profile.sytem,
+          os_version:   action.profile.os_version,
+          build_number: action.profile.build_number,
+          local:        action.profile.local,
           country:      action.profile.country,
-          timeZone:     action.profile.timeZone,
-          isTablet:     action.profile.isTablet,
+          timezone:     action.profile.timezone,
+          is_tablet:    action.profile.is_tablet,
         },
         error: false
       });

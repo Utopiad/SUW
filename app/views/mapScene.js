@@ -70,8 +70,8 @@ class MapScene extends Component {
     // console.log(position.coords);
     return(
       <View style={styles.container}>
-        <Text style={styles.coords}>Longitude: </Text>
-        <Text style={styles.coords}>Latitude: </Text>
+        <Text style={styles.coords}>Longitude: {this.props.position.longitude}</Text>
+        <Text style={styles.coords}>Latitude: {this.props.position.latitude}</Text>
       </View>
     )
   }
