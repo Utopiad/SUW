@@ -71,9 +71,9 @@ const error = (err) => {
 export function setup() {
   return (dispatch) => {
     dispatch({type: USER_SETUP});
+
     getInfo(function(props) {
       dispatch({type: USER_SETUP_SUCCESS, profile: props});
-
       dispatch(searchUserPosition( function(position) {
         dispatch(pushAllToLouis(props, position));
       }, function(err) {
@@ -95,14 +95,13 @@ const getInfo = (onSuccess, onError) => {
       system:       DeviceInfo.getSystemName(),
       brand:        DeviceInfo.getBrand(),
       model:        DeviceInfo.getModel(),
-      os_version:    DeviceInfo.getSystemVersion(),
-      build_number:  DeviceInfo.getBuildNumber(),
+      os_version:   DeviceInfo.getSystemVersion(),
+      build_number: DeviceInfo.getBuildNumber(),
       local:        DeviceInfo.getDeviceLocale(),
       country:      DeviceInfo.getDeviceCountry(),
       timezone:     DeviceInfo.getTimezone(),
-      is_tablet:     DeviceInfo.isTablet() || false
+      is_tablet:    DeviceInfo.isTablet()
     }
-
     onSuccess(devInfo);
   } catch(err) {
     onError(err);
@@ -127,11 +126,11 @@ const pushAllToLouis = (devInfo, position) => {
         'Content-Type': 'application/json'
       },
       body: data
-    }).then((response) => {
-
+    })
+    .then((response) => {
       dispatch({type: USER_PUSH_SUCCESS});
-    }).catch(error => {
-
+    })
+    .catch(error => {
       dispatch({type: USER_PUSH_FAILURE});
     });
   }
@@ -141,11 +140,7 @@ const pushAllToLouis = (devInfo, position) => {
 function pushUserInfos(props) {
   return (dispatch) => {
     console.log('hello');
-
-
-
     dispatch(pushUserId(props));
-
     // debugger;
     // return Axios.post(apiUrlouis)
   }

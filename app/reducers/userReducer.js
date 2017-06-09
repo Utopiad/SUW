@@ -6,37 +6,11 @@ import {
   SUCCESS_POSITION,
   FAILURE_POSITION,
   USER_PUSH_SUCCESS,
-  USER_PUSH_FAILURE
+  USER_PUSH_FAILURE,
+  INITIAL_STATE
 } from '../constants';
 
-export const userReducer = (state = {
-  //InitialState
-  isProfiling: false,
-  error: false,
-  dataFetched: false,
-  profile: {
-    uuid:         '',
-    manufacturer: '',
-    brand:        '',
-    model:        '',
-    os:           '',
-    osVersion:    '',
-    buildNumber:  '',
-    localLang:    '',
-    country:      '',
-    timeZone:     '',
-    isTablet:     ''
-  },
-  isSearching: false,
-  position: {
-    longitude: 0,
-    latitude: 0,
-    accuracy: 0,
-    altitude: 0,
-    speed: 0,
-    timestamp: 0
-  }
-}, action) => {
+export const userReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
     case USER_PUSH_ID_SUCCESS:
       return Object.assign({}, state, {
