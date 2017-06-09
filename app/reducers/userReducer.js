@@ -59,7 +59,7 @@ export const userReducer = (state = {
           manufacturer: action.profile.manufacturer,
           brand:        action.profile.brand,
           model:        action.profile.model,
-          system:       action.profile.sytem,
+          system:       action.profile.system,
           os_version:   action.profile.os_version,
           build_number: action.profile.build_number,
           local:        action.profile.local,
