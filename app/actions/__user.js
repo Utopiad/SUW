@@ -26,7 +26,7 @@ function pushUserPosition(pos) {
 function didFail(err) {
   return {
     type: FAILURE_POSITION,
-    isSearching: false,
+    isSearching: false
   }
 }
 
@@ -35,7 +35,7 @@ const searchUserPosition = (success, onError) => {
     const posOptions = {
       enableHighAccuracy: false,
       timeout: 5000,
-      maximumAge: 1000
+      // maximumAge: 1000
     };
 
     navigator.geolocation.getCurrentPosition(
@@ -74,16 +74,35 @@ export function setup() {
 
     getInfo(function(props) {
       dispatch({type: USER_SETUP_SUCCESS, profile: props});
-      dispatch(searchUserPosition( function(position) {
+      dispatch(searchUserPosition( position => {
         dispatch(pushAllToLouis(props, position));
-      }, function(err) {
+      }, err => {
         console.warn(err);
-      })).bind(dispatch);
+      }));
 
     }, function(err) {
       dispatch({type: USER_SETUP_FAILURE, error: err});
     });
 
+    // Initiate Watching change position
+    // at the end of the setup
+    // whenever position is got or not
+    const posOptions = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      // maximumAge: 1000
+    };
+    navigator.geolocation.watchPosition(
+        (position) => {
+          // console.log(position);
+          dispatch( pushUserPosition(position.coords) );
+          // success( position.coords );
+        }, (error) => {
+          dispatch( didFail(error) );
+          // onError( error );
+        },
+        posOptions
+    );
   }
 }
 
@@ -120,6 +139,8 @@ const pushAllToLouis = (devInfo, position) => {
     // console.log('-------- data: ');
     // console.log(data);
     // console.log('--------');
+    console.log("Pushed to Louis");
+    console.log(data);
     return fetch(apiUrlouis, {
       method: 'POST',
       headers: {
@@ -129,7 +150,7 @@ const pushAllToLouis = (devInfo, position) => {
     })
     .then((response) => {
       response.json().then( (responseJSON) => {
-        console.log(responseJSON);
+        // console.log(responseJSON);
         dispatch({type: USER_PUSH_SUCCESS,
           id: responseJSON.result.id,
           created_at: responseJSON.result.createdAt,
@@ -142,7 +163,6 @@ const pushAllToLouis = (devInfo, position) => {
     });
   }
 }
-
 
 function pushUserInfos(props) {
   return (dispatch) => {

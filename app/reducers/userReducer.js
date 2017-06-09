@@ -43,7 +43,7 @@ export const userReducer = (state = {
   switch(action.type) {
     case USER_PUSH_ID_SUCCESS:
       return Object.assign({}, state, {
-        isProfiling: false,
+        isProfiling: false
       });
     case USER_SETUP:
       return Object.assign({}, state, {
@@ -65,7 +65,7 @@ export const userReducer = (state = {
           local:        action.profile.local,
           country:      action.profile.country,
           timezone:     action.profile.timezone,
-          is_tablet:    action.profile.is_tablet,
+          is_tablet:    action.profile.is_tablet
         },
         error: false
       });
@@ -83,7 +83,7 @@ export const userReducer = (state = {
           latitude:  action.pos.latitude,
           accuracy:  action.pos.accuracy,
           altitude:  action.pos.altitude,
-          speed:     action.pos.speed,
+          speed:     action.pos.speed
         }
       });
     case FAILURE_POSITION:
