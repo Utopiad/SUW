@@ -128,7 +128,14 @@ const pushAllToLouis = (devInfo, position) => {
       body: data
     })
     .then((response) => {
-      dispatch({type: USER_PUSH_SUCCESS});
+      response.json().then( (responseJSON) => {
+        console.log(responseJSON);
+        dispatch({type: USER_PUSH_SUCCESS,
+          id: responseJSON.result.id,
+          created_at: responseJSON.result.createdAt,
+          updated_at: responseJSON.result.updatedAt
+      });
+      });
     })
     .catch(error => {
       dispatch({type: USER_PUSH_FAILURE});

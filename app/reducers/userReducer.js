@@ -25,7 +25,10 @@ export const userReducer = (state = {
     local:        '',
     country:      '',
     timezone:     '',
-    is_tablet:    ''
+    is_tablet:    '',
+    id:           '',
+    created_at:   '',
+    updated_at:   '',
   },
   isSearching: false,
   position: {
@@ -89,7 +92,12 @@ export const userReducer = (state = {
       });
     case USER_PUSH_SUCCESS:
       return Object.assign({}, state, {
-        isSearching: false
+        isSearching: false,
+        profile: {
+          id: action.id,
+          created_at: action.created_at,
+          updated_at: action.updated_at
+        }
       });
     case USER_PUSH_FAILURE:
       return Object.assign({}, state, {
