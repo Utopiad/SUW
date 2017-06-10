@@ -33,23 +33,24 @@ class MapScene extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    // console.log(this.props);
-    // const getPosOptions = {
-    //   enableHighAccuracy: false,
-    //   timeout: 5000,
-    //   maximumAge: 1000
-    // };
-  }
+  // componentDidMount() {
+  //   console.log(this.props);
+  //   const getPosOptions = {
+  //     enableHighAccuracy: false,
+  //     timeout: 5000,
+  //     maximumAge: 1000
+  //   };
+  // }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.position.latitude !== this.props.position.latitude ||
-      nextProps.position.longitude !== this.props.position.longitude ) {
-        console.log('Position changed !');
-        return true;
-      }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (nextProps.position.latitude !== this.props.position.latitude ||
+  //     nextProps.position.longitude !== this.props.position.longitude ||
+  //     nextProps.position.accuracy !== this.props.position.accuracy) {
+  //       // console.log('Position changed !');
+  //       return true;
+  //     }
+  //   return false;
+  // }
 
   componentDidUpdate() {
     return(
@@ -57,6 +58,7 @@ class MapScene extends Component {
         region={{
           longitude: this.props.position.longitude,
           latitude: this.props.position.latitude,
+          accuracy: this.props.position.accuracy,
           latitudeDelta: 0.09214,
           longitudeDelta: 0.00721,
         }}
@@ -72,6 +74,7 @@ class MapScene extends Component {
       <View style={styles.container}>
         <Text style={styles.coords}>Longitude: {this.props.position.longitude}</Text>
         <Text style={styles.coords}>Latitude: {this.props.position.latitude}</Text>
+        <Text style={styles.coords}>accuracy: {this.props.position.accuracy}</Text>
       </View>
     )
   }
