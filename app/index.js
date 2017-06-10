@@ -11,9 +11,10 @@ import SplashScreen from 'react-native-splash-screen';
 
 import MapScene from './views/mapScene';
 import CameraScene from './views/cameraScene';
-import DeviceView from './views/deviceView';
 
 import {connect} from 'react-redux';
+
+import {DELAY_HIDE_SPLASHSCREEN} from './constants';
 
 
 class App extends Component {
@@ -22,7 +23,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    SplashScreen.hide();
+    setTimeout(function() {
+      SplashScreen.hide();
+    }, DELAY_HIDE_SPLASHSCREEN);
   }
 
   render() {
@@ -33,7 +36,6 @@ class App extends Component {
         index={0} >
         <MapScene />
         <CameraScene />
-        <DeviceView />
       </Swiper>
     );
   }

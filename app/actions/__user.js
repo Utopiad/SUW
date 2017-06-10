@@ -26,7 +26,7 @@ function pushUserPosition(pos) {
 function didFail(err) {
   return {
     type: FAILURE_POSITION,
-    isSearching: false,
+    isSearching: false
   }
 }
 
@@ -35,7 +35,7 @@ const searchUserPosition = (success, onError) => {
     const posOptions = {
       enableHighAccuracy: false,
       timeout: 5000,
-      maximumAge: 1000
+      // maximumAge: 1000
     };
 
     navigator.geolocation.getCurrentPosition(
@@ -71,19 +71,38 @@ const error = (err) => {
 export function setup() {
   return (dispatch) => {
     dispatch({type: USER_SETUP});
+
     getInfo(function(props) {
       dispatch({type: USER_SETUP_SUCCESS, profile: props});
-
-      dispatch(searchUserPosition( function(position) {
+      dispatch(searchUserPosition( position => {
         dispatch(pushAllToLouis(props, position));
-      }, function(err) {
+      }, err => {
         console.warn(err);
-      })).bind(dispatch);
+      }));
 
     }, function(err) {
       dispatch({type: USER_SETUP_FAILURE, error: err});
     });
 
+    // Initiate Watching change position
+    // at the end of the setup
+    // whenever position is got or not
+    const posOptions = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      // maximumAge: 1000
+    };
+    navigator.geolocation.watchPosition(
+        (position) => {
+          // console.log(position);
+          dispatch( pushUserPosition(position.coords) );
+          // success( position.coords );
+        }, (error) => {
+          dispatch( didFail(error) );
+          // onError( error );
+        },
+        posOptions
+    );
   }
 }
 
@@ -95,14 +114,13 @@ const getInfo = (onSuccess, onError) => {
       system:       DeviceInfo.getSystemName(),
       brand:        DeviceInfo.getBrand(),
       model:        DeviceInfo.getModel(),
-      os_version:    DeviceInfo.getSystemVersion(),
-      build_number:  DeviceInfo.getBuildNumber(),
+      os_version:   DeviceInfo.getSystemVersion(),
+      build_number: DeviceInfo.getBuildNumber(),
       local:        DeviceInfo.getDeviceLocale(),
       country:      DeviceInfo.getDeviceCountry(),
       timezone:     DeviceInfo.getTimezone(),
-      is_tablet:     DeviceInfo.isTablet() || false
+      is_tablet:    DeviceInfo.isTablet()
     }
-
     onSuccess(devInfo);
   } catch(err) {
     onError(err);
@@ -121,31 +139,35 @@ const pushAllToLouis = (devInfo, position) => {
     // console.log('-------- data: ');
     // console.log(data);
     // console.log('--------');
+    console.log("Pushed to Louis");
+    console.log(data);
     return fetch(apiUrlouis, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: data
-    }).then((response) => {
-
-      dispatch({type: USER_PUSH_SUCCESS});
-    }).catch(error => {
-
+    })
+    .then((response) => {
+      response.json().then( (responseJSON) => {
+        // console.log(responseJSON);
+        dispatch({type: USER_PUSH_SUCCESS,
+          id: responseJSON.result.id,
+          created_at: responseJSON.result.createdAt,
+          updated_at: responseJSON.result.updatedAt
+      });
+      });
+    })
+    .catch(error => {
       dispatch({type: USER_PUSH_FAILURE});
     });
   }
 }
 
-
 function pushUserInfos(props) {
   return (dispatch) => {
     console.log('hello');
-
-
-
     dispatch(pushUserId(props));
-
     // debugger;
     // return Axios.post(apiUrlouis)
   }

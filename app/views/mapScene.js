@@ -34,18 +34,18 @@ class MapScene extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
-    const getPosOptions = {
-      enableHighAccuracy: false,
-      timeout: 5000,
-      maximumAge: 1000
-    };
+    // console.log(this.props);
+    // const getPosOptions = {
+    //   enableHighAccuracy: false,
+    //   timeout: 5000,
+    //   maximumAge: 1000
+    // };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.position.latitude !== this.props.position.latitude ||
       nextProps.position.longitude !== this.props.position.longitude ) {
-        console.log('héhéhéhé');
+        console.log('Position changed !');
         return true;
       }
     return false;
@@ -70,8 +70,8 @@ class MapScene extends Component {
     // console.log(position.coords);
     return(
       <View style={styles.container}>
-        <Text style={styles.coords}>Longitude: </Text>
-        <Text style={styles.coords}>Latitude: </Text>
+        <Text style={styles.coords}>Longitude: {this.props.position.longitude}</Text>
+        <Text style={styles.coords}>Latitude: {this.props.position.latitude}</Text>
       </View>
     )
   }
@@ -90,7 +90,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosition: () => dispatch(getPosition()),
+    getPosition: () => dispatch(getPosition())
   }
 }
 

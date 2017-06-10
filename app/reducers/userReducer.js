@@ -19,28 +19,31 @@ export const userReducer = (state = {
     manufacturer: '',
     brand:        '',
     model:        '',
-    os:           '',
-    osVersion:    '',
-    buildNumber:  '',
-    localLang:    '',
+    system:       '',
+    os_version:   '',
+    build_number: '',
+    local:        '',
     country:      '',
-    timeZone:     '',
-    isTablet:     ''
+    timezone:     '',
+    is_tablet:    '',
+    id:           '',
+    created_at:   '',
+    updated_at:   '',
   },
   isSearching: false,
   position: {
-    longitude: 0,
-    latitude: 0,
-    accuracy: 0,
-    altitude: 0,
-    speed: 0,
-    timestamp: 0
+    longitude:    0,
+    latitude:     0,
+    accuracy:     0,
+    altitude:     0,
+    speed:        0,
+    timestamp:    0
   }
 }, action) => {
   switch(action.type) {
     case USER_PUSH_ID_SUCCESS:
       return Object.assign({}, state, {
-        isProfiling: false,
+        isProfiling: false
       });
     case USER_SETUP:
       return Object.assign({}, state, {
@@ -56,13 +59,13 @@ export const userReducer = (state = {
           manufacturer: action.profile.manufacturer,
           brand:        action.profile.brand,
           model:        action.profile.model,
-          os:           action.profile.os,
-          osVersion:    action.profile.osVersion,
-          buildNumber:  action.profile.buildNumber,
-          localLang:    action.profile.localLang,
+          system:       action.profile.system,
+          os_version:   action.profile.os_version,
+          build_number: action.profile.build_number,
+          local:        action.profile.local,
           country:      action.profile.country,
-          timeZone:     action.profile.timeZone,
-          isTablet:     action.profile.isTablet,
+          timezone:     action.profile.timezone,
+          is_tablet:    action.profile.is_tablet
         },
         error: false
       });
@@ -80,7 +83,7 @@ export const userReducer = (state = {
           latitude:  action.pos.latitude,
           accuracy:  action.pos.accuracy,
           altitude:  action.pos.altitude,
-          speed:     action.pos.speed,
+          speed:     action.pos.speed
         }
       });
     case FAILURE_POSITION:
@@ -89,7 +92,12 @@ export const userReducer = (state = {
       });
     case USER_PUSH_SUCCESS:
       return Object.assign({}, state, {
-        isSearching: false
+        isSearching: false,
+        profile: {
+          id: action.id,
+          created_at: action.created_at,
+          updated_at: action.updated_at
+        }
       });
     case USER_PUSH_FAILURE:
       return Object.assign({}, state, {
