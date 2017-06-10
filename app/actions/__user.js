@@ -89,10 +89,11 @@ export function setup() {
     // whenever position is got or not
     const posOptions = {
       enableHighAccuracy: false,
-      timeout: 5000,
-      // maximumAge: 1000
+      timeout: 250,
+      maximumAge: 1000,
+      distanceFilter: 1
     };
-    navigator.geolocation.watchPosition(
+    const watchID = navigator.geolocation.watchPosition(
         (position) => {
           // console.log(position);
           dispatch( pushUserPosition(position.coords) );
