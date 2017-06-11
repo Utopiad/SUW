@@ -12,7 +12,7 @@ import {
 export const userReducer = (state = {
   //InitialState
   isProfiling: false,
-  error: false,
+  error: null,
   dataFetched: false,
   profile: {
     uuid:         '',
@@ -30,7 +30,8 @@ export const userReducer = (state = {
     created_at:   '',
     updated_at:   '',
   },
-  isSearching: false,
+  isPositionning: false,
+  updatedPosition: false,
   position: {
     longitude:    0,
     latitude:     0,
@@ -78,6 +79,7 @@ export const userReducer = (state = {
     case SUCCESS_POSITION:
       return Object.assign({}, state, {
         isSearching: false,
+        updatedPosition: true,
         position: {
           longitude: action.pos.longitude,
           latitude:  action.pos.latitude,
@@ -88,7 +90,8 @@ export const userReducer = (state = {
       });
     case FAILURE_POSITION:
       return Object.assign({}, state, {
-        isSearching: true
+        isSearching: true,
+        updatedPosition: false,
       });
     case USER_PUSH_SUCCESS:
       return Object.assign({}, state, {
