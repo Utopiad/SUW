@@ -6,7 +6,10 @@ import {
   SUCCESS_POSITION,
   FAILURE_POSITION,
   USER_PUSH_SUCCESS,
-  USER_PUSH_FAILURE
+  USER_PUSH_FAILURE,
+
+  SOCKET_CONNECTION_SUCCESS,
+  SOCKET_CONNECTION_FAILURE,
 } from '../constants';
 
 export const userReducer = (state = {
@@ -39,7 +42,11 @@ export const userReducer = (state = {
     altitude:     0,
     speed:        0,
     timestamp:    0
-  }
+  },
+  isConnectedToSocket: false,
+  socketC: null,
+  events: []
+
 }, action) => {
   switch(action.type) {
     case USER_PUSH_ID_SUCCESS:
@@ -106,6 +113,16 @@ export const userReducer = (state = {
       return Object.assign({}, state, {
         isSearching: false
       });
+
+    case SOCKET_CONNECTION_SUCCESS:
+    return Object.assign({}, state, {
+      isConnectedToSocket: true,
+      socketC: action.socketC
+    });
+    case SOCKET_CONNECTION_FAILURE:
+    return Object.assign({}, state, {
+      error: action.error
+    });
     default:
       return state;
   }

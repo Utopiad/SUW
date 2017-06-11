@@ -7,11 +7,16 @@ import {
   FAILURE_POSITION,
 
   USER_PUSH_SUCCESS,
-  USER_PUSH_FAILURE
+  USER_PUSH_FAILURE,
+
+  SOCKET_CONNECTION_SUCCESS,
+  SOCKET_CONNECTION_FAILURE
 } from '../constants';
 
 import DeviceInfo from 'react-native-device-info';
 import Axios from 'axios';
+import SocketIOClient from 'socket.io-client';
+
 
 const apiUrlouis = "http://163.172.29.197:3000/login";
 
@@ -85,17 +90,17 @@ export function setup() {
       maximumAge: 1000,
       distanceFilter: 1
     };
-    const watchID = navigator.geolocation.watchPosition(
-        (position) => {
-          // console.log(position);
-          dispatch( pushUserPosition(position.coords) );
-          // success( position.coords );
-        }, (error) => {
-          dispatch( didFail(error) );
-          // onError( error );
-        },
-        posOptions
-    );
+    // const watchID = navigator.geolocation.watchPosition(
+    //     (position) => {
+    //       // console.log(position);
+    //       dispatch( pushUserPosition(position.coords) );
+    //       // success( position.coords );
+    //     }, (error) => {
+    //       dispatch( didFail(error) );
+    //       // onError( error );
+    //     },
+    //     posOptions
+    // );
   }
 }
 
@@ -122,16 +127,10 @@ const getInfo = (onSuccess, onError) => {
 
 const pushAllToLouis = (devInfo, position) => {
   return (dispatch) => {
-    // console.log('-------- devInfo: ');
-    // console.log(devInfo);
-    // console.log('--------');
     devInfo.latitude = position.latitude;
     devInfo.longitude = position.longitude;
 
     const data = JSON.stringify(devInfo);
-    // console.log('-------- data: ');
-    // console.log(data);
-    // console.log('--------');
     console.log("Pushed to Louis");
     console.log(data);
     return fetch(apiUrlouis, {
@@ -143,17 +142,85 @@ const pushAllToLouis = (devInfo, position) => {
     })
     .then((response) => {
       response.json().then( (responseJSON) => {
-        // console.log(responseJSON);
         dispatch({
           type: USER_PUSH_SUCCESS,
           id: responseJSON.result.id,
           created_at: responseJSON.result.createdAt,
           updated_at: responseJSON.result.updatedAt
-      });
+        });
+        dispatch(connectToSocketServer(position, devInfo.id));
       });
     })
     .catch(error => {
-      dispatch({type: USER_PUSH_FAILURE});
+      dispatch({type: USER_PUSH_FAILURE, error: error});
     });
   }
-}
+};
+
+export const getPosition = () => {
+  return (dispatch) => {
+    const posOptions = {
+      enableHighAccuracy: false,
+      timeout: 250,
+      maximumAge: 1000,
+      distanceFilter: 1
+    };
+
+    const watchID = navigator.geolocation.watchPosition(
+        (position) => {
+          console.log(position);
+          dispatch( pushUserPosition(position.coords) );
+          // success( position.coords );
+        }, (error) => {
+          dispatch( didFail(error) );
+          // onError( error );
+        },
+        posOptions
+    );
+
+    return watchID;
+  }
+};
+
+/*/
+    SOCKETS PART
+/*/
+
+export const connectToSocketServer = (position, id) => {
+  return (dispatch) => {
+    launchConnection( (client) => {
+      console.log(client);
+      socketPushPos(position, id, client);
+      dispatch({type: SOCKET_CONNECTION_SUCCESS, socketC: client});
+    }, err => {
+      dispatch({type: SOCKET_CONNECTION_FAILURE, error: err});
+    });
+  }
+};
+
+const launchConnection = (onSuccess, onError) => {
+  try {
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ];
+    const socket = SocketIOClient('http://163.172.29.197:3000');
+    onSuccess(socket);
+  } catch(err) {
+    onError(err);
+  }
+};
+
+const socketPushPos = (position, id, client) => {
+  return (dispatch) => {
+    const data = {
+      location: [position.longitude , position.latitude ], // [<longitude>, <latitude>]
+      altitude:position.altitude,
+      speed: position.speed,
+      accuracy: position.accuracy,
+      // @TODO -> LOUIS
+      user_id: id
+    };
+
+    client.emit('user', data);
+  }
+};

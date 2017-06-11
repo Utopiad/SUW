@@ -25,3 +25,16 @@ export const socketReducer = ( state = {
       return state;
   }
 }
+
+
+/*
+- created_at: date
+- last_update: date
+- longitude: float
+- latitude: float
+- type: string
+- name: string
+- description : string
+- size: number.int
+- media : [strings]
+*/
