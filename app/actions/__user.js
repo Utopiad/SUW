@@ -52,14 +52,6 @@ const searchUserPosition = (success, onError) => {
   }
 }
 
-// UserID
-function pushUserId(devInfo) {
-  return {
-    type: USER_PUSH_ID_SUCCESS,
-    profile: devInfo
-  };
-}
-
 const success = (props) => {
   dispatch({type: USER_SETUP_SUCCESS, profile: props});
 };
@@ -152,7 +144,8 @@ const pushAllToLouis = (devInfo, position) => {
     .then((response) => {
       response.json().then( (responseJSON) => {
         // console.log(responseJSON);
-        dispatch({type: USER_PUSH_SUCCESS,
+        dispatch({
+          type: USER_PUSH_SUCCESS,
           id: responseJSON.result.id,
           created_at: responseJSON.result.createdAt,
           updated_at: responseJSON.result.updatedAt
@@ -162,14 +155,5 @@ const pushAllToLouis = (devInfo, position) => {
     .catch(error => {
       dispatch({type: USER_PUSH_FAILURE});
     });
-  }
-}
-
-function pushUserInfos(props) {
-  return (dispatch) => {
-    console.log('hello');
-    dispatch(pushUserId(props));
-    // debugger;
-    // return Axios.post(apiUrlouis)
   }
 }

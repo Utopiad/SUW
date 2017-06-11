@@ -5,6 +5,7 @@ import {
   Text
 } from 'react-native';
 import {getPosition} from '../actions/__user';
+import { connectToSocketServer } from '../actions/sockets';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
 
@@ -31,39 +32,33 @@ const styles = StyleSheet.create({
 class MapScene extends Component {
   constructor(props) {
     super(props);
+
   }
 
-  // componentDidMount() {
-  //   console.log(this.props);
-  //   const getPosOptions = {
-  //     enableHighAccuracy: false,
-  //     timeout: 5000,
-  //     maximumAge: 1000
-  //   };
-  // }
+  componentDidMount() {
+    console.log(this.props);
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextProps.position.latitude !== this.props.position.latitude ||
-  //     nextProps.position.longitude !== this.props.position.longitude ||
-  //     nextProps.position.accuracy !== this.props.position.accuracy) {
-  //       // console.log('Position changed !');
-  //       return true;
-  //     }
-  //   return false;
-  // }
+    if (this.props.isConnectedToSocket) {
+      const {socketC} = this.props;
+
+      // socketC.emit('news', 'J\'aime me beurrer la biscotte.');
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const updatedLatitude   =   nextProps.position.latitude !== this.props.position.latitude;
+    const updatedLongitude  =  nextProps.position.longitude !== this.props.position.longitude;
+    const updatedAccuracy   =   nextProps.position.accuracy !== this.props.position.accuracy;
+
+      if ( updatedLatitude || updatedLongitude || updatedAccuracy ) {
+        // console.log('Position changed !');
+        return true;
+      }
+    return false;
+  }
 
   componentDidUpdate() {
-    return(
-      <MapView
-        region={{
-          longitude: this.props.position.longitude,
-          latitude: this.props.position.latitude,
-          accuracy: this.props.position.accuracy,
-          latitudeDelta: 0.09214,
-          longitudeDelta: 0.00721,
-        }}
-        style={styles.map} />
-    );
+
   }
 
   render() {
@@ -72,6 +67,15 @@ class MapScene extends Component {
     // console.log(position.coords);
     return(
       <View style={styles.container}>
+        <MapView
+          region={{
+            longitude: this.props.position.longitude,
+            latitude: this.props.position.latitude,
+            accuracy: this.props.position.accuracy,
+            latitudeDelta: 0.09214,
+            longitudeDelta: 0.00721,
+          }}
+          style={styles.map} />
         <Text style={styles.coords}>Longitude: {this.props.position.longitude}</Text>
         <Text style={styles.coords}>Latitude: {this.props.position.latitude}</Text>
         <Text style={styles.coords}>accuracy: {this.props.position.accuracy}</Text>
@@ -81,19 +85,28 @@ class MapScene extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const {user} = state;
+  const { user, socket } = state;
+
   const {
     position
   } = user;
 
+  const {
+    isConnectedToSocket,
+    socketC
+  } = socket;
+
   return {
-    position
+    position,
+    isConnectedToSocket,
+    socketC
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosition: () => dispatch(getPosition())
+    getPosition: () => dispatch(getPosition()),
+    connectToSocket: () => dispatch(connectToSocketServer())
   }
 }
 
