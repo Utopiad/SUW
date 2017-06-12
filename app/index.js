@@ -5,8 +5,8 @@ import {
   Text,
   View
 } from 'react-native';
-// import {Router, Scene} from 'react-native-router-flux';
-import Swiper from 'react-native-swiper';
+import {Router, Scene, NavBar, Actions, Reducer, ActionConst} from 'react-native-router-flux';
+// import Swiper from 'react-native-swiper';
 import SplashScreen from 'react-native-splash-screen';
 
 import MapScene from './views/mapScene';
@@ -29,14 +29,22 @@ class App extends Component {
   }
 
   render() {
+    const reducerCreate = params => {
+      const defaultReducer = Reducer(params);
+      return (state, action)=>{
+          console.log("ACTION:", action);
+          return defaultReducer(state, action);
+      }
+    };
+    
     return (
-      <Swiper
-        loop={false}
-        showsPagination={false}
-        index={0} >
-        <MapScene />
-        <CameraScene />
-      </Swiper>
+      <Router createReducer={reducerCreate}>
+        <Scene key="map"
+          component={MapScene}
+          hideNavBar={true}
+          initial
+        />
+      </Router>
     );
   }
 }
