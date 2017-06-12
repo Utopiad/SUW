@@ -47,7 +47,7 @@ const searchUserPosition = (success, onError) => {
         (position) => {
           // console.log(position);
           dispatch( pushUserPosition(position.coords) );
-          success( position.coords );
+          // success( position.coords );
         }, (error) => {
           dispatch( didFail(error) );
           onError( error );
@@ -159,9 +159,9 @@ export const getPosition = () => {
   return (dispatch) => {
     const posOptions = {
       enableHighAccuracy: false,
-      timeout: 1000,
-      maximumAge: 1000,
-      distanceFilter: 2
+      timeout: 5000,
+      maximumAge: 0,
+      distanceFilter: 10
     };
 
     const watchID = navigator.geolocation.watchPosition(
@@ -199,7 +199,8 @@ const launchConnection = (onSuccess, onError) => {
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    const socket = SocketIOClient('http://be6f78d9.ngrok.io');
+    const socket = SocketIOClient('http://163.172.29.197:3000');
+    // const socket = SocketIOClient('http://afec879e.ngrok.io');
     onSuccess(socket);
   } catch(err) {
     onError(err);
