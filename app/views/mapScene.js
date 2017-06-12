@@ -5,7 +5,7 @@ import {
   Text,
   Dimensions
 } from 'react-native';
-import {getPosition, connectToSocketServer} from '../actions/__user';
+import {getPosition, connectToSocketServer, socketPushRegionDragged} from '../actions/__user';
 // import {  } from '../actions/sockets';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
@@ -58,26 +58,31 @@ class MapScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      region: null,
+      region: {},
       markers: []
     };
     this.map = null;
     this.counter = 0;
-    // this.onRegionChange = this.onRegionChange.bind(this);
+    this.onRegionChange = this.onRegionChange.bind(this);
     this.getCoordinates = this.getCoordinates.bind(this);
+    this.socketPushRegionDragged = this.props.socketPushRegionDragged.bind(this);
   }
 
   componentWillMount() {
     this.watchId = this.props.getPosition();
   }
 
+  componentDidMount() {
+    console.log('LONGITUDE_DELTA', LONGITUDE_DELTA);
+    console.log('LATITUDE_DELTA', LATITUDE_DELTA);
+  }
+
   // shouldComponentUpdate(nextProps, nextState) {
-  //   // const {markers} = nextState;
-  //   // const {updatedPosition} = nextState;
-  //   // if(updatedPosition || nextState.markers.length > this.state.markers.length) {
-  //   //   return true;
-  //   // }
-  //   // return false;
+  //   const {updatedPosition} = this.props;
+  //   if(updatedPosition) {
+  //     return true;
+  //   }
+  //   return false;
   // }
   componentDidUpdate() {
   }
@@ -102,18 +107,15 @@ class MapScene extends Component {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
-  // onRegionChange(){
-  //   console.log('POSITION UPDATING');
-  //   // console.log(this.props.position.longitude, this.props.position.latitude)
-  //   const {longitude, latitude} = this.props.position;
-  //
-  //   this.setState({
-  //     region: {
-  //
-  //     },
-  //     updateMap: true
-  //   });
-  // }
+  onRegionChange(region){
+    console.log('POSITION UPDATING');
+    console.log(region);
+    const {socketC, id} = this.props;
+    console.log(socketC);
+    if(this.props.isConnectedToSocket) {
+      this.props.socketPushRegionDragged({region}, id, socketC);
+    }
+  }
 
   render() {
     const { longitude, latitude, accuracy } = this.props.position;
@@ -148,6 +150,7 @@ class MapScene extends Component {
             loadingEnabled={true}
             onPress={(e) => {this.getCoordinates(e)}}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
+            onRegionChangeComplete={this.onRegionChange}
             style={styles.map} >
 
             {this.state.markers.map(marker => {
@@ -167,25 +170,32 @@ class MapScene extends Component {
 
 const mapStateToProps = (state) => {
   const { user } = state;
+  const {profile} = user;
 
   const {
     position,
     isConnectedToSocket,
     socketC,
-    updatedPosition
+    updatedPosition,
   } = user;
+
+  const {
+    id
+  } = profile;
 
   return {
     position,
     isConnectedToSocket,
     socketC,
-    updatedPosition
+    updatedPosition,
+    id
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosition: () => dispatch(getPosition())
+    getPosition: () => dispatch(getPosition()),
+    socketPushRegionDragged: (region, id, socketC) => dispatch(socketPushRegionDragged(region, id, socketC))
   }
 }
 
