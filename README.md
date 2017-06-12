@@ -1,5 +1,6 @@
 # SUW
-A React-Native application using NFC to avoid using supermarkets consumer tickets
+===
+A React-Native application using Geolocation that warns you of bunch of people around you
 
 ## Requirements:
 As we're doing Native development, we need some tools to enable our phones to host the app directly during development.
