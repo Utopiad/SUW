@@ -41,15 +41,15 @@ class App extends Component {
 
     return (
       <RouterWithRedux>
-        <Scene key="root">
+        <Scene key="root" hideNavBar={true}>
           <Scene key="map"
             component={MapScene}
-            hideNavBar={true}
-
+            duration={0}
+            initial
           />
           <Scene key="camera"
             component={CameraScene}
-            initial
+            duration={0}
           />
         </Scene>
       </RouterWithRedux>

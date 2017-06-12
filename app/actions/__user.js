@@ -200,7 +200,7 @@ const launchConnection = (onSuccess, onError) => {
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    const socket = SocketIOClient('http://1dff429f.ngrok.io:3000');
+    const socket = SocketIOClient('http://1dff429f.ngrok.io');
     // const socket = SocketIOClient('http://afec879e.ngrok.io');
     onSuccess(socket);
   } catch(err) {

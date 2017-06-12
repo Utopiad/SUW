@@ -42,7 +42,7 @@ class CameraScene extends Component {
     return(
       <View style={styles.container}>
         <Text style={styles.heading}>CameraView !</Text>
-        <Text>{this.props.routes.scene}</Text>
+        <Text>This is the Scene: {this.props.routes.scene.name}</Text>
       </View>
     )
   }
