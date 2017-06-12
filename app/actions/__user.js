@@ -18,7 +18,7 @@ import Axios from 'axios';
 import SocketIOClient from 'socket.io-client';
 
 
-const apiUrlouis = "http://163.172.29.197:3000/login";
+const apiUrlouis = "http://1dff429f.ngrok.io/login";
 
 // Position
 function pushUserPosition(pos) {
@@ -47,7 +47,7 @@ const searchUserPosition = (success, onError) => {
         (position) => {
           // console.log(position);
           dispatch( pushUserPosition(position.coords) );
-          // success( position.coords );
+          success( position.coords );
         }, (error) => {
           dispatch( didFail(error) );
           onError( error );
@@ -131,7 +131,6 @@ const pushAllToLouis = (devInfo, position) => {
     devInfo.longitude = position.longitude;
 
     const data = JSON.stringify(devInfo);
-    console.log("SENDING !!!!!!!!!!!!!");
     return fetch(apiUrlouis, {
       method: 'POST',
       headers: {
@@ -141,6 +140,7 @@ const pushAllToLouis = (devInfo, position) => {
     })
     .then((response) => {
       response.json().then( (responseJSON) => {
+        console.log(responseJSON);
         dispatch({
           type: USER_PUSH_SUCCESS,
           id: responseJSON.result.id,
@@ -200,7 +200,7 @@ const launchConnection = (onSuccess, onError) => {
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    const socket = SocketIOClient('http://163.172.29.197:3000');
+    const socket = SocketIOClient('http://1dff429f.ngrok.io');
     // const socket = SocketIOClient('http://afec879e.ngrok.io');
     onSuccess(socket);
   } catch(err) {
