@@ -147,7 +147,8 @@ class MapScene extends Component {
             // showsMyLocationButton={true}
             showsUserLocation={true}
             loadingEnabled={true}
-            onPress={Actions.camera}
+
+            onPress={ (e) => {this.getCoordinates(e)}}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             onRegionChangeComplete={this.onRegionChange}
             style={styles.map} >
