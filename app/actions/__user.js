@@ -131,8 +131,6 @@ const pushAllToLouis = (devInfo, position) => {
     devInfo.longitude = position.longitude;
 
     const data = JSON.stringify(devInfo);
-    console.log("Pushed to Louis");
-    console.log(data);
     return fetch(apiUrlouis, {
       method: 'POST',
       headers: {
@@ -147,8 +145,8 @@ const pushAllToLouis = (devInfo, position) => {
           id: responseJSON.result.id,
           created_at: responseJSON.result.createdAt,
           updated_at: responseJSON.result.updatedAt
-        });
-        dispatch(connectToSocketServer(position, devInfo.id));
+        })
+        dispatch(connectToSocketServer(position, responseJSON.result.id));
       });
     })
     .catch(error => {
@@ -161,14 +159,13 @@ export const getPosition = () => {
   return (dispatch) => {
     const posOptions = {
       enableHighAccuracy: false,
-      timeout: 250,
+      timeout: 1000,
       maximumAge: 1000,
-      distanceFilter: 1
+      distanceFilter: 2
     };
 
     const watchID = navigator.geolocation.watchPosition(
         (position) => {
-          console.log(position);
           dispatch( pushUserPosition(position.coords) );
           // success( position.coords );
         }, (error) => {
@@ -189,8 +186,7 @@ export const getPosition = () => {
 export const connectToSocketServer = (position, id) => {
   return (dispatch) => {
     launchConnection( (client) => {
-      console.log(client);
-      socketPushPos(position, id, client);
+      dispatch(socketPushPos(position, id, client));
       dispatch({type: SOCKET_CONNECTION_SUCCESS, socketC: client});
     }, err => {
       dispatch({type: SOCKET_CONNECTION_FAILURE, error: err});
@@ -203,21 +199,20 @@ const launchConnection = (onSuccess, onError) => {
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    const socket = SocketIOClient('http://163.172.29.197:3000');
+    const socket = SocketIOClient('http://be6f78d9.ngrok.io');
     onSuccess(socket);
   } catch(err) {
     onError(err);
   }
 };
 
-const socketPushPos = (position, id, client) => {
+export const socketPushPos = (position, id, client) => {
   return (dispatch) => {
     const data = {
       location: [position.longitude , position.latitude ], // [<longitude>, <latitude>]
-      altitude:position.altitude,
+      altitude: position.altitude,
       speed: position.speed,
       accuracy: position.accuracy,
-      // @TODO -> LOUIS
       user_id: id
     };
 

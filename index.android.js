@@ -14,7 +14,6 @@ import App from './app/index';
 
 let store = configureStore();
 store.dispatch(setup());
-// store.dispatch(connectToSocketServer());
 
 class SUW extends Component {
   render() {
