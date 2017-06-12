@@ -48,27 +48,54 @@ const ASPECT_RATIO = width / height;
 
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+let id = 0;
+
+function randomColor() {
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+}
 
 class MapScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
       region: null,
+      markers: []
     };
     this.map = null;
     this.counter = 0;
     // this.onRegionChange = this.onRegionChange.bind(this);
+    this.getCoordinates = this.getCoordinates.bind(this);
   }
 
   componentWillMount() {
     this.watchId = this.props.getPosition();
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // const {markers} = nextState;
+  //   // const {updatedPosition} = nextState;
+  //   // if(updatedPosition || nextState.markers.length > this.state.markers.length) {
+  //   //   return true;
+  //   // }
+  //   // return false;
+  // }
   componentDidUpdate() {
   }
 
   getCoordinates(e) {
     console.log(e.nativeEvent.coordinate);
+    const markPosition = e.nativeEvent.coordinate;
+
+    this.setState({
+      markers: [
+        ...this.state.markers,
+        {
+          coordinate: markPosition,
+          key: id++,
+          color: randomColor()
+        },
+      ],
+    });
   }
 
   componentWillUnMount() {
@@ -123,6 +150,13 @@ class MapScene extends Component {
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             style={styles.map} >
 
+            {this.state.markers.map(marker => {
+              return <MapView.Marker
+                key={marker.key}
+                coordinate={marker.coordinate}
+                pinColor={marker.color}
+              />
+            })}
           </MapView>
         }
       </View>
