@@ -10,7 +10,9 @@ import {
   USER_PUSH_FAILURE,
 
   SOCKET_CONNECTION_SUCCESS,
-  SOCKET_CONNECTION_FAILURE
+  SOCKET_CONNECTION_FAILURE,
+
+  LOUIS_API,
 } from '../constants';
 
 import DeviceInfo from 'react-native-device-info';
@@ -18,7 +20,8 @@ import Axios from 'axios';
 import SocketIOClient from 'socket.io-client';
 
 
-const apiUrlouis = "http://1dff429f.ngrok.io/login";
+const apiUrlouis = LOUIS_API + '/login';
+
 
 // Position
 function pushUserPosition(pos) {
@@ -26,6 +29,13 @@ function pushUserPosition(pos) {
     type: SUCCESS_POSITION,
     pos: pos
   };
+  // return (dispatch) => {
+  //   dispatch(socketPushPos(pos, id, client));
+  //   return {
+  //     type: SUCCESS_POSITION,
+  //     pos: pos
+  //   };
+  // }
 }
 
 function didFail(err) {
@@ -201,13 +211,30 @@ const launchConnection = (onSuccess, onError) => {
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
-    const socket = SocketIOClient('http://1dff429f.ngrok.io:3000');
+    
+    const socket = SocketIOClient(LOUIS_API);
     // const socket = SocketIOClient('http://afec879e.ngrok.io');
     onSuccess(socket);
   } catch(err) {
     onError(err);
   }
 };
+
+export const socketPushRegionDragged = ({region}, id, client) => {
+  return (dispatch) => {
+    console.log(region);
+    const {latitude, longitude} = region;
+    console.log(latitude);
+    const data = {
+      limit: 5,
+      location: [latitude, longitude],
+      distance: 12,
+      user_id: id
+    };
+
+    client.emit('user', data);
+  }
+}
 
 export const socketPushPos = (position, id, client) => {
   return (dispatch) => {

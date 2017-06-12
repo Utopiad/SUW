@@ -5,7 +5,7 @@ import {
   Text,
   Dimensions
 } from 'react-native';
-import {getPosition, connectToSocketServer} from '../actions/__user';
+import {getPosition, connectToSocketServer, socketPushRegionDragged} from '../actions/__user';
 // import {  } from '../actions/sockets';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
@@ -65,6 +65,7 @@ class MapScene extends Component {
     this.counter = 0;
     this.onRegionChange = this.onRegionChange.bind(this);
     this.getCoordinates = this.getCoordinates.bind(this);
+    this.socketPushRegionDragged = this.props.socketPushRegionDragged.bind(this);
   }
 
   componentWillMount() {
@@ -109,10 +110,11 @@ class MapScene extends Component {
   onRegionChange(region){
     console.log('POSITION UPDATING');
     console.log(region);
-    // console.log(this.props.position.longitude, this.props.position.latitude)
-    const {longitude, latitude} = this.props.position;
-
-    // this.setState({region});
+    const {socketC, id} = this.props;
+    console.log(socketC);
+    if(this.props.isConnectedToSocket) {
+      this.props.socketPushRegionDragged({region}, id, socketC);
+    }
   }
 
   render() {
@@ -168,25 +170,32 @@ class MapScene extends Component {
 
 const mapStateToProps = (state) => {
   const { user } = state;
+  const {profile} = user;
 
   const {
     position,
     isConnectedToSocket,
     socketC,
-    updatedPosition
+    updatedPosition,
   } = user;
+
+  const {
+    id
+  } = profile;
 
   return {
     position,
     isConnectedToSocket,
     socketC,
-    updatedPosition
+    updatedPosition,
+    id
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosition: () => dispatch(getPosition())
+    getPosition: () => dispatch(getPosition()),
+    socketPushRegionDragged: (region, id, socketC) => dispatch(socketPushRegionDragged(region, id, socketC))
   }
 }
 
