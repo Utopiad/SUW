@@ -158,7 +158,7 @@ const pushAllToLouis = (devInfo, position) => {
 export const getPosition = () => {
   return (dispatch) => {
     const posOptions = {
-      enableHighAccuracy: false
+      enableHighAccuracy: false,
       timeout: 5000,
       maximumAge: 0,
       distanceFilter: 10
