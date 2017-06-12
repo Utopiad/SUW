@@ -22,6 +22,7 @@ import SocketIOClient from 'socket.io-client';
 
 const apiUrlouis = LOUIS_API + '/login';
 
+
 // Position
 function pushUserPosition(pos) {
   return {
@@ -210,6 +211,7 @@ const launchConnection = (onSuccess, onError) => {
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
+    
     const socket = SocketIOClient(LOUIS_API);
     // const socket = SocketIOClient('http://afec879e.ngrok.io');
     onSuccess(socket);
