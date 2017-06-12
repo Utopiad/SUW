@@ -237,7 +237,7 @@ export const socketPushRegionDragged = ({region}, id, client) => {
 export const socketPushPos = (position, id, client) => {
   return (dispatch) => {
     const data = {
-      location: [position.longitude , position.latitude ], // [<longitude>, <latitude>]
+      location: [position.latitude , position.longitude ], // [<latitude>, <longitude>]
       altitude: position.altitude,
       speed: position.speed,
       accuracy: position.accuracy,
