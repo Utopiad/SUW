@@ -58,12 +58,12 @@ class MapScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      region: null,
+      region: {},
       markers: []
     };
     this.map = null;
     this.counter = 0;
-    // this.onRegionChange = this.onRegionChange.bind(this);
+    this.onRegionChange = this.onRegionChange.bind(this);
     this.getCoordinates = this.getCoordinates.bind(this);
   }
 
@@ -71,13 +71,17 @@ class MapScene extends Component {
     this.watchId = this.props.getPosition();
   }
 
+  componentDidMount() {
+    console.log('LONGITUDE_DELTA', LONGITUDE_DELTA);
+    console.log('LATITUDE_DELTA', LATITUDE_DELTA);
+  }
+
   // shouldComponentUpdate(nextProps, nextState) {
-  //   // const {markers} = nextState;
-  //   // const {updatedPosition} = nextState;
-  //   // if(updatedPosition || nextState.markers.length > this.state.markers.length) {
-  //   //   return true;
-  //   // }
-  //   // return false;
+  //   const {updatedPosition} = this.props;
+  //   if(updatedPosition) {
+  //     return true;
+  //   }
+  //   return false;
   // }
   componentDidUpdate() {
   }
@@ -102,18 +106,14 @@ class MapScene extends Component {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
-  // onRegionChange(){
-  //   console.log('POSITION UPDATING');
-  //   // console.log(this.props.position.longitude, this.props.position.latitude)
-  //   const {longitude, latitude} = this.props.position;
-  //
-  //   this.setState({
-  //     region: {
-  //
-  //     },
-  //     updateMap: true
-  //   });
-  // }
+  onRegionChange(region){
+    console.log('POSITION UPDATING');
+    console.log(region);
+    // console.log(this.props.position.longitude, this.props.position.latitude)
+    const {longitude, latitude} = this.props.position;
+
+    // this.setState({region});
+  }
 
   render() {
     const { longitude, latitude, accuracy } = this.props.position;
@@ -148,6 +148,7 @@ class MapScene extends Component {
             loadingEnabled={true}
             onPress={(e) => {this.getCoordinates(e)}}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
+            onRegionChangeComplete={this.onRegionChange}
             style={styles.map} >
 
             {this.state.markers.map(marker => {
