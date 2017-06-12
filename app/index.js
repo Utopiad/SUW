@@ -5,7 +5,7 @@ import {
   Text,
   View
 } from 'react-native';
-import {Router, Scene, NavBar, Actions, Reducer, ActionConst} from 'react-native-router-flux';
+import {Router, Scene, NavBar} from 'react-native-router-flux';
 // import Swiper from 'react-native-swiper';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -16,6 +16,7 @@ import {connect} from 'react-redux';
 
 import { DELAY_HIDE_SPLASHSCREEN } from './constants';
 
+const RouterWithRedux = connect()(Router);
 
 class App extends Component {
   constructor(props) {
@@ -28,23 +29,30 @@ class App extends Component {
     }, DELAY_HIDE_SPLASHSCREEN);
   }
 
+  // const reducerCreate = params => {
+  //   const defaultReducer = Reducer(params);
+  //   return (state, action)=>{
+  //       console.log("ACTION:", action);
+  //       return defaultReducer(state, action);
+  //   }
+  // };
+
   render() {
-    const reducerCreate = params => {
-      const defaultReducer = Reducer(params);
-      return (state, action)=>{
-          console.log("ACTION:", action);
-          return defaultReducer(state, action);
-      }
-    };
-    
+
     return (
-      <Router createReducer={reducerCreate}>
-        <Scene key="map"
-          component={MapScene}
-          hideNavBar={true}
-          initial
-        />
-      </Router>
+      <RouterWithRedux>
+        <Scene key="root">
+          <Scene key="map"
+            component={MapScene}
+            hideNavBar={true}
+
+          />
+          <Scene key="camera"
+            component={CameraScene}
+            initial
+          />
+        </Scene>
+      </RouterWithRedux>
     );
   }
 }

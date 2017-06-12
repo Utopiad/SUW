@@ -7,8 +7,9 @@ import {
 } from 'react-native';
 import {getPosition, connectToSocketServer} from '../actions/__user';
 // import {  } from '../actions/sockets';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import MapView from 'react-native-maps';
+import {Actions} from 'react-native-router-flux';
 
 const { width, height } = Dimensions.get('window');
 
@@ -119,7 +120,7 @@ class MapScene extends Component {
             // showsMyLocationButton={true}
             showsUserLocation={true}
             loadingEnabled={true}
-            onPress={(e) => {this.getCoordinates(e)}}
+            onPress={() => {Actions.camera}}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             style={styles.map} >
 
@@ -133,6 +134,7 @@ class MapScene extends Component {
 
 const mapStateToProps = (state) => {
   const { user } = state;
+  const { routes } = state;
 
   const {
     position,
@@ -145,7 +147,8 @@ const mapStateToProps = (state) => {
     position,
     isConnectedToSocket,
     socketC,
-    updatedPosition
+    updatedPosition,
+    routes
   };
 };
 

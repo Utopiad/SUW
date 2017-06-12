@@ -131,6 +131,7 @@ const pushAllToLouis = (devInfo, position) => {
     devInfo.longitude = position.longitude;
 
     const data = JSON.stringify(devInfo);
+    console.log("SENDING !!!!!!!!!!!!!");
     return fetch(apiUrlouis, {
       method: 'POST',
       headers: {
