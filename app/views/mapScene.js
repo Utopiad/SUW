@@ -54,111 +54,79 @@ class MapScene extends Component {
     super(props);
     this.state = {
       region: null,
-      updateMap: false
     };
+    this.map = null;
     this.counter = 0;
-    this.onRegionChange = this.onRegionChange.bind(this);
+    // this.onRegionChange = this.onRegionChange.bind(this);
   }
-
-  // getInitialState() {
-  //   return {
-  //     region: {
-  //       latitude: 37.78825,
-  //       longitude: -122.4324,
-  //       latitudeDelta: 0.0922,
-  //       longitudeDelta: 0.0421,
-  //     }
-  //   }
-  // }
 
   componentWillMount() {
     this.watchId = this.props.getPosition();
   }
 
-  componentDidMount() {
-    const { longitude, latitude } = this.props.position;
-    this.setState({
-      region: {
-      latitude: latitude,
-      longitude: longitude,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
-    },
-    updateMap: true
-    });
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const updatedLatitude   =   nextProps.position.latitude !== this.props.position.latitude;
-    const updatedLongitude  =   nextProps.position.longitude !== this.props.position.longitude;
-    const updatedAccuracy   =   nextProps.position.accuracy !== this.props.position.accuracy;
-
-    // const { updatedPosition } = nextProps;
-
-    if ( nextState.updateMap || updatedAccuracy || updatedLongitude || updatedLatitude ) {
-      // console.log('Position changed !');
-
-      return true;
-    }
-    return false;
-  }
-
-  componentWillUpdate() {
-    this.counter = this.counter + 1;
-  }
-
   componentDidUpdate() {
-    // this.onRegionChange();
-    this.setState({
-      updateMap: false
-    })
+  }
+
+  getCoordinates(e) {
+    console.log(e.nativeEvent.coordinate);
   }
 
   componentWillUnMount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
-  onRegionChange(){
-    console.log('POSITION UPDATING');
-    console.log(this.props.position.longitude, this.props.position.latitude)
-    const {longitude, latitude} = this.props.position;
-
-    this.setState({
-      region: {
-        latitude: latitude,
-        longitude: longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
-      updateMap: true
-    });
-  }
+  // onRegionChange(){
+  //   console.log('POSITION UPDATING');
+  //   // console.log(this.props.position.longitude, this.props.position.latitude)
+  //   const {longitude, latitude} = this.props.position;
+  //
+  //   this.setState({
+  //     region: {
+  //
+  //     },
+  //     updateMap: true
+  //   });
+  // }
 
   render() {
     const { longitude, latitude, accuracy } = this.props.position;
     const { region } = this.state;
     const { updatedPosition } = this.props;
 
-    console.log(region);
+
+     const customEdgePadding = {
+      top: 10,
+      right: 10,
+      bottom: 10,
+      left: 10
+    };
+    const LatLng = [{
+      latitude,
+      longitude
+    }];
+
     return(
       <View style={styles.container}>
         {updatedPosition &&
           <MapView
-            initialRegion={region}
-            onRegionChange={this.onRegionChange}
+            region={{
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA
+            }}
+            ref={ map => {this.map = map}}
+            // showsMyLocationButton={true}
+            showsUserLocation={true}
+            loadingEnabled={true}
+            onPress={(e) => {this.getCoordinates(e)}}
+            onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             style={styles.map} >
 
-
-
-            </MapView>
+          </MapView>
         }
-          <View style={styles.bottom}>
-            <Text style={styles.coords}>Longitude: {this.props.position.longitude}</Text>
-            <Text style={styles.coords}>Latitude: {this.props.position.latitude}</Text>
-            <Text style={styles.coords}>accuracy: {this.props.position.accuracy}</Text>
-            <Text style={styles.coords}>counter: {this.counter}</Text>
-          </View>
       </View>
+
     )
   }
 }
@@ -173,11 +141,6 @@ const mapStateToProps = (state) => {
     updatedPosition
   } = user;
 
-  // const {
-  //   isConnectedToSocket,
-  //   socketC
-  // } = socket;
-
   return {
     position,
     isConnectedToSocket,
@@ -188,10 +151,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosition: () => dispatch(getPosition()),
-    connectToSocket: () => dispatch(connectToSocketServer())
+    getPosition: () => dispatch(getPosition())
   }
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapScene);
 
