@@ -89,7 +89,6 @@ class MapScene extends Component {
   }
 
   getCoordinates(e) {
-    console.log(e.nativeEvent.coordinate);
     const markPosition = e.nativeEvent.coordinate;
 
     this.setState({
@@ -150,7 +149,7 @@ class MapScene extends Component {
             showsUserLocation={true}
             loadingEnabled={true}
 
-            onPress={ (e) => {this.getCoordinates(e)}}
+            onPress={Actions.camera}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             onRegionChangeComplete={this.onRegionChange}
             style={styles.map} >
@@ -190,7 +189,7 @@ const mapStateToProps = (state) => {
     isConnectedToSocket,
     socketC,
     updatedPosition,
-    routes
+    routes,
     id
 
   };
