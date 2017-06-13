@@ -42,15 +42,16 @@ class CameraScene extends Component {
     return(
       <View style={styles.container}>
         <Text style={styles.heading}>CameraView !</Text>
-        <Text>This is the Scene: {this.props.routes.scene.name}</Text>
+        <Text>Longitude: {this.props.newEvent.position.longitude}</Text>
+        <Text>Latitude: {this.props.newEvent.position.latitude}</Text>
+
       </View>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { user } = state;
-  const { routes } = state;
+  const { user, routes, newEvent } = state;
 
   const {
     position,
@@ -64,7 +65,8 @@ const mapStateToProps = (state) => {
     isConnectedToSocket,
     socketC,
     updatedPosition,
-    routes
+    routes,
+    newEvent
   };
 };
 

@@ -6,6 +6,7 @@ import {
   Dimensions
 } from 'react-native';
 import {getPosition, connectToSocketServer, socketPushRegionDragged} from '../actions/__user';
+import {beginAddEvent} from '../actions/event';
 // import {  } from '../actions/sockets';
 import {connect} from 'react-redux';
 import MapView from 'react-native-maps';
@@ -90,17 +91,19 @@ class MapScene extends Component {
 
   getCoordinates(e) {
     const markPosition = e.nativeEvent.coordinate;
-
-    this.setState({
-      markers: [
-        ...this.state.markers,
-        {
-          coordinate: markPosition,
-          key: id++,
-          color: randomColor()
-        },
-      ],
-    });
+    // addEvent(markPosition);
+    this.props.beginAddEvent(markPosition);
+    Actions.camera();
+    // this.setState({
+    //   markers: [
+    //     ...this.state.markers,
+    //     {
+    //       coordinate: markPosition,
+    //       key: id++,
+    //       color: randomColor()
+    //     },
+    //   ],
+    // });
   }
 
   componentWillUnMount() {
@@ -111,7 +114,6 @@ class MapScene extends Component {
     console.log('POSITION UPDATING');
     console.log(region);
     const {socketC, id} = this.props;
-    console.log(socketC);
     if(this.props.isConnectedToSocket) {
       this.props.socketPushRegionDragged({region}, id, socketC);
     }
@@ -149,7 +151,7 @@ class MapScene extends Component {
             showsUserLocation={true}
             loadingEnabled={true}
 
-            onPress={Actions.camera}
+            onPress={ (e) => {this.getCoordinates(e)}}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             onRegionChangeComplete={this.onRegionChange}
             style={styles.map} >
@@ -170,7 +172,7 @@ class MapScene extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, routes } = state;
+  const { user, routes, newEvent } = state;
   const { profile } = user;
 
   const {
@@ -190,15 +192,16 @@ const mapStateToProps = (state) => {
     socketC,
     updatedPosition,
     routes,
-    id
-
+    id,
+    newEvent
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosition: () => dispatch(getPosition()),
-    socketPushRegionDragged: (region, id, socketC) => dispatch(socketPushRegionDragged(region, id, socketC))
+    socketPushRegionDragged: (region, id, socketC) => dispatch(socketPushRegionDragged(region, id, socketC)),
+    beginAddEvent: (coords) => dispatch(beginAddEvent(coords))
   }
 }
 
