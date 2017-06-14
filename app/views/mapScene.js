@@ -63,6 +63,7 @@ class MapScene extends Component {
     super(props);
     this.state = {
       region: {},
+      isWatchPositionLaunched: false
       // markers: [{
       //   key: id,
       //   coordinate: {
@@ -97,6 +98,7 @@ class MapScene extends Component {
   // }
 
   shouldComponentUpdate(nextProps) {
+    const {isWatchPositionLaunched} = this.state;
     if(nextProps.isConnectedToSocket) {
       return true;
     }
@@ -104,12 +106,18 @@ class MapScene extends Component {
   }
 
   componentDidUpdate() {
+    const {isWatchPositionLaunched} = this.state;
     const {socketC} = this.props;
     id++;
     user_id.then((response)=>{
-      console.log('COUCOU CA MARCHE');
-      console.log(response);
-      this.watchId = this.props.getPosition(response, socketC);
+      if ( !isWatchPositionLaunched ) {
+        console.log('COUCOU CA MARCHE');
+        console.log(response);
+        this.watchId = this.props.getPosition(response, socketC);
+        this.setState({
+          isWatchPositionLaunched: true
+        });
+      }
     }).catch(err => {
       throw err;
     });
