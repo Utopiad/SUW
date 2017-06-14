@@ -1,6 +1,7 @@
 import {
   USER_PUSH_ID_SUCCESS,
   USER_SETUP,
+  USER_CONNECTED,
   USER_SETUP_SUCCESS,
   USER_SETUP_FAILURE,
   SUCCESS_POSITION,
@@ -19,6 +20,7 @@ export const userReducer = (state = {
   isProfiling: false,
   error: null,
   dataFetched: false,
+  connected: false,
   profile: {
     uuid:         '',
     manufacturer: '',
@@ -56,6 +58,11 @@ export const userReducer = (state = {
       return Object.assign({}, state, {
         isProfiling: true,
         dataFetched: false
+      });
+      break;
+    case USER_CONNECTED:
+      return Object.assign({}, state, {
+        connected: true
       });
       break;
     case USER_SETUP_SUCCESS:

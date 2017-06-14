@@ -13,7 +13,9 @@ import SocketIOClient from 'socket.io-client';
 export const connectToSocketServer = (profile, position) => {
   return (dispatch) => {
     launchConnection( (client) => {
-      if(profile.length !== -1) {
+      console.log(Object.keys(profile).length);
+      if(Object.keys(profile).length > 0) {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         dispatch(pushAllToLouis(profile, position, client));
       }
       dispatch({type: SOCKET_CONNECTION_SUCCESS, socketC: client});

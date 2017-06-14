@@ -99,7 +99,8 @@ class MapScene extends Component {
 
   shouldComponentUpdate(nextProps) {
     const {isWatchPositionLaunched} = this.state;
-    if(nextProps.isConnectedToSocket) {
+    console.log(nextProps.connected);
+    if(nextProps.isConnectedToSocket && nextProps.connected) {
       return true;
     }
     return false;
@@ -203,7 +204,8 @@ const mapStateToProps = (state) => {
   const {
     position,
     updatedPosition,
-    profile
+    profile,
+    connected
   } = user;
 
   const {
@@ -222,7 +224,8 @@ const mapStateToProps = (state) => {
     updatedPosition,
     routes,
     id,
-    newEvent
+    newEvent,
+    connected
   };
 };
 

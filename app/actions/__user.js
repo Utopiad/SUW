@@ -1,6 +1,7 @@
 import {
   USER_PUSH_ID_SUCCESS,
   USER_SETUP,
+  USER_CONNECTED,
   USER_SETUP_SUCCESS,
   USER_SETUP_FAILURE,
   SUCCESS_POSITION,
@@ -71,6 +72,7 @@ const error = (err) => {
 export function setup() {
   return (dispatch) => {
     isNewUser.then(() => {
+      dispatch({type: USER_CONNECTED});
       console.log('THIS USER IS ALREADY SETUP');
       dispatch(searchUserPosition( position => {
         dispatch(connectToSocketServer({}, position));
@@ -121,17 +123,17 @@ const getInfo = (onSuccess, onError) => {
 export const isNewUser =
   new Promise( async function isNewUser(resolve, reject) {
     const id = await AsyncStorage.getItem('user_id');
-    if (typeof id === 'string') {
+    if (typeof id === 'string' && id !== 'undefined') {
       resolve();
     } else {
-      resolve();
+      reject();
     }
   });
 
 export const user_id =
   new Promise( async function user_id(resolve, reject) {
     const id = await AsyncStorage.getItem('user_id');
-    if (id) {
+    if (typeof id === 'string' && id !== 'undefined') {
       // console.log(typeof id);
       resolve(JSON.parse(id));
     } else {
@@ -154,7 +156,7 @@ export const pushAllToLouis = (devInfo, position, client) => {
   return (dispatch) => {
     devInfo.latitude = position.latitude;
     devInfo.longitude = position.longitude;
-
+    console.log(devInfo);
     const data = JSON.stringify(devInfo);
 
     return fetch(apiUrlouis, {
@@ -174,6 +176,7 @@ export const pushAllToLouis = (devInfo, position, client) => {
         });
         try {
           AsyncStorage.setItem('user_id', JSON.stringify(responseJSON.result.id));
+          dispatch({type: USER_CONNECTED});
         } catch(err) {
           console.warn(err);
         }
