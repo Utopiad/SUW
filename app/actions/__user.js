@@ -120,27 +120,31 @@ const getInfo = (onSuccess, onError) => {
 
 export const isNewUser =
   new Promise( async function isNewUser(resolve, reject) {
-    await AsyncStorage.getItem('user_id').then(response => {
-      if (response) {
-        // console.log(response);
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    })
+    const id = await AsyncStorage.getItem('user_id');
+    if (typeof id === 'string') {
+      resolve();
+    } else {
+      resolve();
+    }
   })
 
 export const user_id =
   new Promise( async function user_id(resolve, reject) {
-    await AsyncStorage.getItem('user_id').then((response) => {
-      // console.log('Good ID !!! => '+response);
-      if(response){
-        resolve(JSON.parse(response));
-      } else {
-        let reason = new Error('Error during recuperation of UserId in AsyncStorage.')
-        reject(reason);
-      }
-    });
+    const id = await AsyncStorage.getItem('user_id');
+    if (typeof id === 'string') {
+      resolve(JSON(parse(id)));
+    } else {
+      let reason = new Error('Error during recuperation of UserId in AsyncStorage.');
+      resolve();
+    }
+    // await AsyncStorage.getItem('user_id').then((response) => {
+    //   // console.log('Good ID !!! => '+response);
+    //   if(response){
+    //     resolve(JSON.parse(response));
+    //   } else {
+    //
+    //   }
+    // });
   }
 );
 
@@ -184,9 +188,9 @@ export const getPosition = (id, client) => {
   return (dispatch) => {
     const posOptions = {
       enableHighAccuracy: false,
-      timeout: 250,
+      timeout: 2500,
       maximumAge: 0,
-      distanceFilter: 1
+      distanceFilter: 10
     };
     const watchID = navigator.geolocation.watchPosition(
         (position) => {
