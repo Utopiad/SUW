@@ -126,13 +126,14 @@ export const isNewUser =
     } else {
       resolve();
     }
-  })
+  });
 
 export const user_id =
   new Promise( async function user_id(resolve, reject) {
     const id = await AsyncStorage.getItem('user_id');
-    if (typeof id === 'string') {
-      resolve(JSON(parse(id)));
+    if (id) {
+      // console.log(typeof id);
+      resolve(JSON.parse(id));
     } else {
       let reason = new Error('Error during recuperation of UserId in AsyncStorage.');
       resolve();
