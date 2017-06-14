@@ -15,6 +15,7 @@ export const eventReducer = (state = initialState, action) => {
       break;
     case ADD_EVENT_FAILURE:
       return {
+        ...state,
         error: action.error
       };
       break;

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class CameraScene extends Component {
+class newEventScene extends Component {
   constructor(props) {
     super(props);
 
@@ -44,7 +44,6 @@ class CameraScene extends Component {
         <Text style={styles.heading}>CameraView !</Text>
         <Text>Longitude: {this.props.newEvent.position.longitude}</Text>
         <Text>Latitude: {this.props.newEvent.position.latitude}</Text>
-
       </View>
     )
   }
@@ -57,8 +56,13 @@ const mapStateToProps = (state) => {
     position,
     isConnectedToSocket,
     socketC,
-    updatedPosition
+    updatedPosition,
+    profile
   } = user;
+
+  const {
+    id
+  } = profile;
 
   return {
     position,
@@ -66,8 +70,9 @@ const mapStateToProps = (state) => {
     socketC,
     updatedPosition,
     routes,
-    newEvent
+    newEvent,
+    id
   };
 };
 
-export default connect(mapStateToProps)(CameraScene);
+export default connect(mapStateToProps)(newEventScene);

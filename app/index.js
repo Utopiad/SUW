@@ -10,7 +10,7 @@ import {Router, Scene, NavBar} from 'react-native-router-flux';
 import SplashScreen from 'react-native-splash-screen';
 
 import MapScene from './views/mapScene';
-import CameraScene from './views/cameraScene';
+import NewEventScene from './views/newEventScene';
 
 import {connect} from 'react-redux';
 
@@ -47,8 +47,8 @@ class App extends Component {
             duration={0}
             initial
           />
-          <Scene key="camera"
-            component={CameraScene}
+          <Scene key="newevent"
+            component={NewEventScene}
             duration={0}
           />
         </Scene>

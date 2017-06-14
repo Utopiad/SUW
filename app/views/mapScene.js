@@ -87,13 +87,14 @@ class MapScene extends Component {
   //   return false;
   // }
   componentDidUpdate() {
+    console.log("Component updated");
   }
 
   getCoordinates(e) {
     const markPosition = e.nativeEvent.coordinate;
     // addEvent(markPosition);
     this.props.beginAddEvent(markPosition);
-    Actions.camera();
+    Actions.newevent();
     // this.setState({
     //   markers: [
     //     ...this.state.markers,
@@ -125,7 +126,7 @@ class MapScene extends Component {
     const { updatedPosition } = this.props;
 
 
-     const customEdgePadding = {
+    const customEdgePadding = {
       top: 10,
       right: 10,
       bottom: 10,
@@ -173,13 +174,13 @@ class MapScene extends Component {
 
 const mapStateToProps = (state) => {
   const { user, routes, newEvent } = state;
-  const { profile } = user;
 
   const {
     position,
     isConnectedToSocket,
     socketC,
     updatedPosition,
+    profile
   } = user;
 
   const {
