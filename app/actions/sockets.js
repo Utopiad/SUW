@@ -68,7 +68,7 @@ export const socketPushPos = (position, id, client) => {
     client.emit('user', data);
 
     client.on('user', (response) => {
-      console.log(response);
+      console.log('USER FETCH EVENTS', response);
       //vérifier qu'il y a de nouveaux events depuis la derniere demande,
       // si oui, on prend tout et on dispatch une action
       //sinon on ne retourne rien
