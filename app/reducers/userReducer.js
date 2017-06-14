@@ -10,6 +10,8 @@ import {
 
   SOCKET_CONNECTION_SUCCESS,
   SOCKET_CONNECTION_FAILURE,
+
+  GET_EVENTS_NEARBY_LOCATION,
 } from '../constants';
 
 export const userReducer = (state = {
@@ -42,22 +44,20 @@ export const userReducer = (state = {
     altitude:     0,
     speed:        0,
     timestamp:    0
-  },
-  isConnectedToSocket: false,
-  socketC: null,
-  events: []
-
+  }
 }, action) => {
   switch(action.type) {
     case USER_PUSH_ID_SUCCESS:
       return Object.assign({}, state, {
         isProfiling: false
       });
+      break;
     case USER_SETUP:
       return Object.assign({}, state, {
         isProfiling: true,
         dataFetched: false
       });
+      break;
     case USER_SETUP_SUCCESS:
       return Object.assign({}, state, {
         isProfiling: false,
@@ -77,12 +77,14 @@ export const userReducer = (state = {
         },
         error: false
       });
+      break;
     case USER_SETUP_FAILURE:
       return Object.assign({}, state, {
         isProfiling: false,
         dataFetched: false,
         error: action.error
       });
+      break;
     case SUCCESS_POSITION:
       return Object.assign({}, state, {
         isSearching: false,
@@ -95,34 +97,39 @@ export const userReducer = (state = {
           speed:     action.pos.speed
         }
       });
+      break;
     case FAILURE_POSITION:
       return Object.assign({}, state, {
         isSearching: true,
         updatedPosition: false,
       });
+      break;
     case USER_PUSH_SUCCESS:
       return Object.assign({}, state, {
-        isSearching: false,
-        profile: {
-          id: action.id,
-          created_at: action.created_at,
-          updated_at: action.updated_at
-        }
+          isSearching: false,
+          profile: {
+            id: action.id,
+            created_at: action.created_at,
+            updated_at: action.updated_at
+          }
       });
+      break;
     case USER_PUSH_FAILURE:
       return Object.assign({}, state, {
         isSearching: false
       });
-
+      break;
     case SOCKET_CONNECTION_SUCCESS:
-    return Object.assign({}, state, {
-      isConnectedToSocket: true,
-      socketC: action.socketC
-    });
+      return Object.assign({}, state, {
+        isConnectedToSocket: true,
+        socketC: action.socketC
+      });
+      break;
     case SOCKET_CONNECTION_FAILURE:
-    return Object.assign({}, state, {
-      error: action.error
-    });
+      return Object.assign({}, state, {
+        error: action.error
+      });
+      break;
     default:
       return state;
   }

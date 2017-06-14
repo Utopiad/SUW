@@ -9,15 +9,15 @@ import {
   USER_PUSH_SUCCESS,
   USER_PUSH_FAILURE,
 
-  SOCKET_CONNECTION_SUCCESS,
-  SOCKET_CONNECTION_FAILURE,
-
   LOUIS_API,
 } from '../constants';
 
 import DeviceInfo from 'react-native-device-info';
-import Axios from 'axios';
-import SocketIOClient from 'socket.io-client';
+import { AsyncStorage } from 'react-native';
+import {
+  connectToSocketServer,
+  socketPushPos
+} from './sockets';
 
 
 const apiUrlouis = LOUIS_API + '/login';
@@ -29,13 +29,6 @@ function pushUserPosition(pos) {
     type: SUCCESS_POSITION,
     pos: pos
   };
-  // return (dispatch) => {
-  //   dispatch(socketPushPos(pos, id, client));
-  //   return {
-  //     type: SUCCESS_POSITION,
-  //     pos: pos
-  //   };
-  // }
 }
 
 function didFail(err) {
@@ -77,40 +70,30 @@ const error = (err) => {
 
 export function setup() {
   return (dispatch) => {
-    dispatch({type: USER_SETUP});
-
-    getInfo(function(props) {
-      dispatch({type: USER_SETUP_SUCCESS, profile: props});
+    isNewUser.then(() => {
+      console.log('THIS USER IS ALREADY SETUP');
       dispatch(searchUserPosition( position => {
-        dispatch(pushAllToLouis(props, position));
+        dispatch(connectToSocketServer({}, position));
       }, err => {
         console.warn(err);
       }));
+      return;
+    }).catch( () => {
+      console.log('THIS IS A NEW USER !');
+      dispatch({type: USER_SETUP});
 
-    }, function(err) {
-      dispatch({type: USER_SETUP_FAILURE, error: err});
+      getInfo(function(props) {
+        dispatch({type: USER_SETUP_SUCCESS, profile: props});
+        dispatch(searchUserPosition( position => {
+          dispatch(connectToSocketServer(props, position));
+        }, err => {
+          console.warn(err);
+        }));
+
+      }, function(err) {
+        dispatch({type: USER_SETUP_FAILURE, error: err});
+      });
     });
-
-    // Initiate Watching change position
-    // at the end of the setup
-    // whenever position is got or not
-    const posOptions = {
-      enableHighAccuracy: false,
-      timeout: 250,
-      maximumAge: 1000,
-      distanceFilter: 1
-    };
-    // const watchID = navigator.geolocation.watchPosition(
-    //     (position) => {
-    //       // console.log(position);
-    //       dispatch( pushUserPosition(position.coords) );
-    //       // success( position.coords );
-    //     }, (error) => {
-    //       dispatch( didFail(error) );
-    //       // onError( error );
-    //     },
-    //     posOptions
-    // );
   }
 }
 
@@ -135,13 +118,44 @@ const getInfo = (onSuccess, onError) => {
   }
 }
 
-const pushAllToLouis = (devInfo, position) => {
+export const isNewUser =
+  new Promise( async function isNewUser(resolve, reject) {
+    const id = await AsyncStorage.getItem('user_id');
+    if (typeof id === 'string') {
+      resolve();
+    } else {
+      resolve();
+    }
+  })
+
+export const user_id =
+  new Promise( async function user_id(resolve, reject) {
+    const id = await AsyncStorage.getItem('user_id');
+    if (typeof id === 'string') {
+      resolve(JSON(parse(id)));
+    } else {
+      let reason = new Error('Error during recuperation of UserId in AsyncStorage.');
+      resolve();
+    }
+    // await AsyncStorage.getItem('user_id').then((response) => {
+    //   // console.log('Good ID !!! => '+response);
+    //   if(response){
+    //     resolve(JSON.parse(response));
+    //   } else {
+    //
+    //   }
+    // });
+  }
+);
+
+
+export const pushAllToLouis = (devInfo, position, client) => {
   return (dispatch) => {
     devInfo.latitude = position.latitude;
     devInfo.longitude = position.longitude;
 
     const data = JSON.stringify(devInfo);
-    console.log(data);
+
     return fetch(apiUrlouis, {
       method: 'POST',
       headers: {
@@ -151,34 +165,38 @@ const pushAllToLouis = (devInfo, position) => {
     })
     .then((response) => {
       response.json().then( (responseJSON) => {
-        console.log(responseJSON);
         dispatch({
           type: USER_PUSH_SUCCESS,
           id: responseJSON.result.id,
           created_at: responseJSON.result.createdAt,
           updated_at: responseJSON.result.updatedAt
-        })
-        dispatch(connectToSocketServer(position, responseJSON.result.id));
+        });
+        try {
+          AsyncStorage.setItem('user_id', JSON.stringify(responseJSON.result.id));
+        } catch(err) {
+          console.warn(err);
+        }
       });
-    })
-    .catch(error => {
+    }).catch(error => {
       dispatch({type: USER_PUSH_FAILURE, error: error});
+      throw error;
     });
   }
 };
 
-export const getPosition = () => {
+export const getPosition = (id, client) => {
   return (dispatch) => {
     const posOptions = {
       enableHighAccuracy: false,
-      timeout: 5000,
+      timeout: 2500,
       maximumAge: 0,
       distanceFilter: 10
     };
-
     const watchID = navigator.geolocation.watchPosition(
         (position) => {
-          dispatch( pushUserPosition(position.coords) );
+          console.log(position);
+          dispatch(socketPushPos(position.coords, id, client));
+          dispatch( pushUserPosition(position.coords));
           // success( position.coords );
         }, (error) => {
           dispatch( didFail(error) );
@@ -188,64 +206,5 @@ export const getPosition = () => {
     );
 
     return watchID;
-  }
-};
-
-/*/
-    SOCKETS PART
-/*/
-
-export const connectToSocketServer = (position, id) => {
-  return (dispatch) => {
-    launchConnection( (client) => {
-      dispatch(socketPushPos(position, id, client));
-      dispatch({type: SOCKET_CONNECTION_SUCCESS, socketC: client});
-    }, err => {
-      dispatch({type: SOCKET_CONNECTION_FAILURE, error: err});
-    });
-  }
-};
-
-const launchConnection = (onSuccess, onError) => {
-  try {
-    console.ignoredYellowBox = [
-      'Setting a timer'
-    ];
-    
-    const socket = SocketIOClient(LOUIS_API);
-    // const socket = SocketIOClient('http://afec879e.ngrok.io');
-    onSuccess(socket);
-  } catch(err) {
-    onError(err);
-  }
-};
-
-export const socketPushRegionDragged = ({region}, id, client) => {
-  return (dispatch) => {
-    console.log(region);
-    const {latitude, longitude} = region;
-    console.log(latitude);
-    const data = {
-      limit: 5,
-      location: [latitude, longitude],
-      distance: 12,
-      user_id: id
-    };
-
-    client.emit('user', data);
-  }
-}
-
-export const socketPushPos = (position, id, client) => {
-  return (dispatch) => {
-    const data = {
-      location: [position.latitude , position.longitude ], // [<latitude>, <longitude>]
-      altitude: position.altitude,
-      speed: position.speed,
-      accuracy: position.accuracy,
-      user_id: id
-    };
-
-    client.emit('user', data);
   }
 };
