@@ -71,8 +71,8 @@ const error = (err) => {
 
 export function setup() {
   return (dispatch) => {
-    isNewUser.then(() => {
-      dispatch({type: USER_CONNECTED});
+    isNewUser.then((response) => {
+      dispatch({type: USER_CONNECTED, id: response});
       console.log('THIS USER IS ALREADY SETUP');
       dispatch(searchUserPosition( position => {
         dispatch(connectToSocketServer({}, position));
@@ -124,33 +124,12 @@ export const isNewUser =
   new Promise( async function isNewUser(resolve, reject) {
     const id = await AsyncStorage.getItem('user_id');
     if (typeof id === 'string' && id !== 'undefined') {
-      resolve();
-    } else {
-      reject();
-    }
-  });
-
-export const user_id =
-  new Promise( async function user_id(resolve, reject) {
-    const id = await AsyncStorage.getItem('user_id');
-    if (typeof id === 'string' && id !== 'undefined') {
-      // console.log(typeof id);
       resolve(JSON.parse(id));
     } else {
       let reason = new Error('Error during recuperation of UserId in AsyncStorage.');
-      resolve();
+      reject(reason);
     }
-    // await AsyncStorage.getItem('user_id').then((response) => {
-    //   // console.log('Good ID !!! => '+response);
-    //   if(response){
-    //     resolve(JSON.parse(response));
-    //   } else {
-    //
-    //   }
-    // });
-  }
-);
-
+  });
 
 export const pushAllToLouis = (devInfo, position, client) => {
   return (dispatch) => {

@@ -21,6 +21,7 @@ export const userReducer = (state = {
   error: null,
   dataFetched: false,
   connected: false,
+  id: '',
   profile: {
     uuid:         '',
     manufacturer: '',
@@ -62,7 +63,8 @@ export const userReducer = (state = {
       break;
     case USER_CONNECTED:
       return Object.assign({}, state, {
-        connected: true
+        connected: true,
+        id: action.id
       });
       break;
     case USER_SETUP_SUCCESS:

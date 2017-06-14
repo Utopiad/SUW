@@ -4,7 +4,7 @@ import {
   View,
   Text
 } from 'react-native';
-
+import {submitEvent} from '../actions/sockets';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 
@@ -29,6 +29,27 @@ class newEventScene extends Component {
     this.state = {
       isLoading: null
     };
+  }
+
+  componentDidMount() {
+    const {socketC, id} = this.props;
+
+    /*/
+      EVENT SUBMIT SOCKET
+    /*/
+    // console.log(id);
+    // const event = {
+    //   user_id: id,
+    //   nbr_participant: 124,
+    //   name: 'Submit test',
+    //   type: 'music',
+    //   description: 'Lorenzo fait un concert dans le coin, que du sale',
+    //   hashtag: '#LorenzoTrash',
+    //   longitude: 48.86593862195033,
+    //   latitude: 2.4298185110092163,
+    // };
+    //
+    // this.props.submitEvent(event, socketC);
   }
 
   // componentWillMount() {
@@ -57,12 +78,9 @@ const mapStateToProps = (state) => {
     isConnectedToSocket,
     socketC,
     updatedPosition,
-    profile
-  } = user;
-
-  const {
+    profile,
     id
-  } = profile;
+  } = user;
 
   return {
     position,
@@ -75,4 +93,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(newEventScene);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitEvent: (event, socketC) => dispatch(submitEvent(event, socketC))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(newEventScene);

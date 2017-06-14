@@ -13,9 +13,8 @@ import SocketIOClient from 'socket.io-client';
 export const connectToSocketServer = (profile, position) => {
   return (dispatch) => {
     launchConnection( (client) => {
-      console.log(Object.keys(profile).length);
+
       if(Object.keys(profile).length > 0) {
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         dispatch(pushAllToLouis(profile, position, client));
       }
       dispatch({type: SOCKET_CONNECTION_SUCCESS, socketC: client});
@@ -42,18 +41,18 @@ const launchConnection = (onSuccess, onError) => {
 export const socketPushRegionDragged = ({region}, id, client) => {
   return (dispatch) => {
     const {latitude, longitude} = region;
-    const data = {
-      location: [latitude, longitude],
-      user_id: id
+
+    const dataForEvents = {
+      latitude: latitude,
+      longitude: longitude,
+      distance: 1000
     };
 
-    // client.emit('fetch_events', data);
-
-    // client.on('fetch_events', (events) => {
-    //   console.log(events);
+    // client.emit('fetch_events', dataForEvents, (data) => {
+    //   console.log(data);
     // });
   }
-}
+};
 
 export const socketPushPos = (position, id, client) => {
   return (dispatch) => {
@@ -64,21 +63,56 @@ export const socketPushPos = (position, id, client) => {
       altitude: position.altitude,
       speed: position.speed,
       accuracy: position.accuracy,
-      user_id: id
+      user_id: id,
+      distance: 500
     };
 
-    client.emit('user', data);
-    client.emit('fetch_events', data);
-    // client.on('user', (response) => {
-    //   console.log('USER FETCH EVENTS', response);
-    //   //vérifier qu'il y a de nouveaux events depuis la derniere demande,
-    //   // si oui, on prend tout et on dispatch une action
-    //   //sinon on ne retourne rien
-    // });
+    client.emit('user', data, (response) => {
+      // console.log(data);
+      console.log('---response Event for User psition', response);
+      // dispatch(getEvents(response));
+    });
 
     // dispatch(getEvents(response));
   }
 };
+
+//event, id, client
+export const submitEvent = (event, client) => {
+  return (dispatch) => {
+    console.log('SUBMITTING EVENT');
+
+    const dataEvent = {
+      user_id: event.user_id,
+      nbr_participant: event.nbr_participant,
+      name: event.name,
+      type: event.type,
+      description: event.description,
+      hashtag: event.hashtag,
+      longitude: event.longitude,
+      latitude: event.latitude,
+    };
+
+    client.emit('add_event', dataEvent, (response) => {
+      console.log(response);
+    });
+  }
+};
+
+export const voteEvent = (event, client) => {
+  return (dispatch) => {
+    const data = {
+      id_user: event.id_user,
+      id_event: event.id_event,
+      type: event.type,
+      nbr_participants: event.nbr_participant
+    };
+    console.log(data);
+    client.emit('vote_event', data, (response) => {
+      console.log(response);
+    });
+  }
+}
 
 const getEvents = (data) => {
   return {
