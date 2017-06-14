@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   routes: routesReducer,
   user: userReducer,
   newEvent: eventReducer
-  // socket: socketReducer
+  socket: socketReducer
 });
 
 export default rootReducer;
