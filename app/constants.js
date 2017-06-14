@@ -18,4 +18,6 @@ export const SOCKET_NEW_PINS = 'SOCKET_NEW_PINS';
 
 export const DELAY_HIDE_SPLASHSCREEN = 2000;
 
-export const LOUIS_API = 'http://8fef6ddf.ngrok.io';
+// export const LOUIS_API = 'http://ac9f107e.ngrok.io';
+
+export const LOUIS_API = 'http://163.172.29.197:3000';
