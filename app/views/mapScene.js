@@ -5,13 +5,13 @@ import {
   Text,
   Dimensions
 } from 'react-native';
-import {
-  getPosition,
-  user_id
-} from '../actions/__user';
-import { socketPushRegionDragged } from '../actions/sockets';
-import { connect } from 'react-redux';
+import {getPosition, user_id} from '../actions/__user';
+import { socketPushRegionDragged, connectToSocketServer } from '../actions/sockets';
+import {beginAddEvent} from '../actions/event';
+// import {  } from '../actions/sockets';
+import {connect} from 'react-redux';
 import MapView from 'react-native-maps';
+import {Actions} from 'react-native-router-flux';
 import MarkerCollection from '../containers/markerCollection';
 
 const { width, height } = Dimensions.get('window');
@@ -116,9 +116,10 @@ class MapScene extends Component {
   }
 
   getCoordinates(e) {
-    console.log(e.nativeEvent.coordinate);
     const markPosition = e.nativeEvent.coordinate;
-
+    // addEvent(markPosition);
+    this.props.beginAddEvent(markPosition);
+    Actions.newevent();
     // this.setState({
     //   markers: [
     //     ...this.state.markers,
@@ -148,7 +149,7 @@ class MapScene extends Component {
     const { region } = this.state;
     const { updatedPosition } = this.props;
 
-     const customEdgePadding = {
+    const customEdgePadding = {
       top: 10,
       right: 10,
       bottom: 10,
@@ -173,7 +174,8 @@ class MapScene extends Component {
             // showsMyLocationButton={true}
             showsUserLocation={true}
             loadingEnabled={true}
-            onPress={(e) => {this.getCoordinates(e)}}
+
+            onPress={ (e) => {this.getCoordinates(e)}}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             onRegionChangeComplete={this.onRegionChange}
             style={styles.map} >
@@ -188,12 +190,12 @@ class MapScene extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user, socket } = state;
+  const { user, routes, newEvent, socket } = state;
 
   const {
     position,
     updatedPosition,
-    profile,
+    profile
   } = user;
 
   const {
@@ -210,14 +212,17 @@ const mapStateToProps = (state) => {
     isConnectedToSocket,
     socketC,
     updatedPosition,
-    id
+    routes,
+    id,
+    newEvent
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosition: (id, socketC) => dispatch(getPosition(id, socketC)),
-    socketPushRegionDragged: (region, id, socketC) => dispatch(socketPushRegionDragged(region, id, socketC))
+    socketPushRegionDragged: (region, id, socketC) => dispatch(socketPushRegionDragged(region, id, socketC)),
+    beginAddEvent: (coords) => dispatch(beginAddEvent(coords))
   }
 }
 

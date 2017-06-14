@@ -5,6 +5,9 @@ import {
   Text
 } from 'react-native';
 
+import {connect} from 'react-redux';
+import {Actions} from 'react-native-router-flux';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -19,7 +22,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class CameraScene extends Component {
+class newEventScene extends Component {
   constructor(props) {
     super(props);
 
@@ -39,7 +42,37 @@ export default class CameraScene extends Component {
     return(
       <View style={styles.container}>
         <Text style={styles.heading}>CameraView !</Text>
+        <Text>Longitude: {this.props.newEvent.position.longitude}</Text>
+        <Text>Latitude: {this.props.newEvent.position.latitude}</Text>
       </View>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  const { user, routes, newEvent } = state;
+
+  const {
+    position,
+    isConnectedToSocket,
+    socketC,
+    updatedPosition,
+    profile
+  } = user;
+
+  const {
+    id
+  } = profile;
+
+  return {
+    position,
+    isConnectedToSocket,
+    socketC,
+    updatedPosition,
+    routes,
+    newEvent,
+    id
+  };
+};
+
+export default connect(mapStateToProps)(newEventScene);
