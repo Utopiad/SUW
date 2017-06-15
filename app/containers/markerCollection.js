@@ -23,10 +23,36 @@ class MarkerCollection extends Component {
     console.log('THE MARKER COLLECTION DID UPDATE !');
   }
 
-  findImage(marker) {
-    const {type} = marker;
-
-
+  findImage(type) {
+    switch(type) {
+    case 'cultural':
+      return require('../assets/img/icons-culture.png');
+      break;
+    case 'food':
+      return require('../assets/img/icons-food.png');
+      break;
+    case 'march':
+      return require('../assets/img/icons-march.png');
+      break;
+    case 'misc':
+      return require('../assets/img/icons-miscellaneous.png');
+      break;
+    case 'music':
+      return require('../assets/img/icons-music.png');
+      break;
+    case 'party':
+      return require('../assets/img/icons-party.png');
+      break;
+    case 'sport':
+      return require('../assets/img/icons-sport.png');
+      break;
+    case 'waiting':
+      return require('../assets/img/icons-waiting.png');
+      break;
+    case 'incident':
+      return require('../assets/img/icons-warning.png');
+      break;
+    }
   }
 
   render() {
@@ -40,9 +66,7 @@ class MarkerCollection extends Component {
               latitude: marker.location[0],
               longitude: marker.location[1],
             };
-
-            const imagePath = this.findImage(marker);
-
+            
             return <MapView.Marker
                 coordinate={location}
                 key={i}
@@ -50,7 +74,7 @@ class MarkerCollection extends Component {
               >
                 <CustomMapMarker
                   key={i}
-                  imagePath={imagePath}
+                  imagePath={this.findImage(marker.type)}
                   {...marker}
                 />
               </MapView.Marker>

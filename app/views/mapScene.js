@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   Text,
-  Dimensions
+  Dimensions,
+  StatusBar
 } from 'react-native';
 import {getPosition, isNewUser} from '../actions/__user';
 import { socketPushRegionDragged, connectToSocketServer, voteEvent } from '../actions/sockets';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f96363',
     alignItems: 'center'
   },
   heading: {
@@ -65,7 +66,6 @@ class MapScene extends Component {
       region: {},
       isWatchPositionLaunched: false
     };
-
     this.map = null;
     this.counter = 0;
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -77,7 +77,6 @@ class MapScene extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const {isWatchPositionLaunched} = this.state;
     if(nextProps.isConnectedToSocket && nextProps.connected) {
       return true;
     }
@@ -106,7 +105,6 @@ class MapScene extends Component {
     const markPosition = e.nativeEvent.coordinate;
     const {socketC, id} = this.props;
 
-    // console.log(markPosition);
     /*/
       EVENT UP & DOWN VOTES SOCKET
     /*/
@@ -128,7 +126,7 @@ class MapScene extends Component {
   }
 
   onRegionChange(region){
-    console.log('POSITION UPDATING');
+    console.log('REGION UPDATING');
     const {socketC, id} = this.props;
     if(this.props.isConnectedToSocket) {
       this.props.socketPushRegionDragged({region}, id, socketC);
@@ -153,6 +151,10 @@ class MapScene extends Component {
 
     return(
       <View style={styles.container}>
+      <StatusBar
+     backgroundColor="#f96363"
+     barStyle="dark-content"
+   />
         {updatedPosition &&
           <MapView
             region={{
@@ -162,7 +164,7 @@ class MapScene extends Component {
               longitudeDelta: LONGITUDE_DELTA
             }}
             ref={ map => {this.map = map}}
-            // showsMyLocationButton={true}
+            showsMyLocationButton={true}
             showsUserLocation={true}
             loadingEnabled={true}
             onLongPress={ (e) => {this.getCoordinates(e)}}
