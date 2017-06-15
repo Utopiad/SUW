@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import {Router, Scene, NavBar, ActionConst} from 'react-native-router-flux';
 // import Swiper from 'react-native-swiper';
-import SplashScreen from 'react-native-splash-screen';
 
 import MapScene from './views/mapScene';
 import NewEventScene from './views/newEventScene';
@@ -21,12 +20,6 @@ const RouterWithRedux = connect()(Router);
 class App extends Component {
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-    setTimeout(function() {
-      SplashScreen.hide();
-    }, DELAY_HIDE_SPLASHSCREEN);
   }
 
   // const reducerCreate = params => {
