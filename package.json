@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "lodash": "^4.17.4",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.2",
     "react-native-device-info": "^0.10.2",

@@ -48,9 +48,10 @@ export const socketPushRegionDragged = ({region}, id, client) => {
       distance: 1000
     };
 
-    // client.emit('fetch_events', dataForEvents, (data) => {
-    //   console.log(data);
-    // });
+    client.emit('fetch_events', dataForEvents, (data) => {
+      dispatch(getEvents(data));
+      // console.log(data);
+    });
   }
 };
 
@@ -68,12 +69,10 @@ export const socketPushPos = (position, id, client) => {
     };
 
     client.emit('user', data, (response) => {
-      // console.log(data);
       console.log('---response Event for User psition', response);
-      // dispatch(getEvents(response));
+      console.log(typeof response);
+      dispatch(getEvents(response));
     });
-
-    // dispatch(getEvents(response));
   }
 };
 
