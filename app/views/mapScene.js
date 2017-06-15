@@ -86,7 +86,6 @@ class MapScene extends Component {
 
   shouldComponentUpdate(nextProps) {
     const {isWatchPositionLaunched} = this.state;
-    console.log(nextProps.connected);
     if(nextProps.isConnectedToSocket && nextProps.connected) {
       return true;
     }

@@ -173,7 +173,7 @@ export const getPosition = (id, client) => {
       enableHighAccuracy: false,
       timeout: 2500,
       maximumAge: 0,
-      distanceFilter: 10
+      distanceFilter: 5
     };
     const watchID = navigator.geolocation.watchPosition(
         (position) => {

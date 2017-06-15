@@ -84,9 +84,9 @@ export const submitEvent = (event, client) => {
 
     const dataEvent = {
       user_id: event.user_id,
-      nbr_participant: event.nbr_participant,
-      name: event.name,
-      type: event.type,
+      nbr_participant: event.people,
+      name: event.title,
+      type: event.eventtype,
       description: event.description,
       hashtag: event.hashtag,
       longitude: event.longitude,
