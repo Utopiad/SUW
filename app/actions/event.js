@@ -3,14 +3,15 @@ import {
   ADD_EVENT_FAILURE,
   BEGIN_ADD_EVENT,
   SUBMIT_ADD_EVENT,
-  OPEN_EVENT
+  OPEN_EVENT,
+  BACK_FROM_OPEN_EVENT
 } from '../constants';
 
 export const beginAddEvent = (coords) => {
   return {
     type: BEGIN_ADD_EVENT,
     longitude: coords.longitude,
-    latitude: coords.latitude
+    latitude: coords.latitude,
   };
 }
 
@@ -34,15 +35,17 @@ export const successAddEvent = () => {
 }
 
 export const openEvent = (marker) => {
-  console.log(marker);
+
   return {
     type: OPEN_EVENT,
-    longitude: marker.longitude,
-    latitude: marker.latitude,
-    title: marker.title,
+    longitude: marker.location[1],
+    latitude: marker.location[0],
+    title: marker.name,
     description: marker.description,
-    people: marker.people,
-    eventtype: marker.eventtype,
-    hashtag: marker.hashtag
+    people: marker.nbr_participant,
+    eventtype: marker.type,
+    hashtag: marker.hashtag,
+    id_user: marker.user_id,
+    id: marker.id
   }
 }

@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, TouchableHighlight } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
 import {openEvent} from '../actions/event';
 import CustomMapMarker from '../components/customMapMarker';
 
+
+const styles = StyleSheet.create({
+  callout: {
+    width: 48,
+    height: 48
+  }
+});
+
 class MarkerCollection extends Component {
   constructor(props) {
     super(props);
 
-    // this.openEvent = this.props.openEvent.bind(this);
+    this.openEvent = this.props.openEvent.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -26,7 +34,6 @@ class MarkerCollection extends Component {
     console.log('THE MARKER COLLECTION DID UPDATE !');
   }
 
-<<<<<<< HEAD
   findImage(type) {
     switch(type) {
     case 'cultural':
@@ -57,12 +64,14 @@ class MarkerCollection extends Component {
       return require('../assets/img/icons-warning.png');
       break;
     }
+  }
 
   _onPress(e, marker) {
     console.log('_ONPRESS_ ----------------_ONPRESS_');
-    console.log(e.nativeEvent);
     console.log(marker);
-    this.props.openEvent(marker);
+    this.openEvent(marker);
+    // debugger;
+    Actions.eventTouched();
   }
 
   render() {
@@ -80,17 +89,14 @@ class MarkerCollection extends Component {
             return <MapView.Marker
                   coordinate={location}
                   key={i}
-                // onPress={this._onPress.bind(this, marker)}
-                // anchor={{x: -0.5, y: -0.5}}
+                  onPress={(e) => {this._onPress(e, marker)}}
+                  // anchor={{x: -0.5, y: -0.5}}
                 >
-                <MapView.Callout tooltip>
-                    <CustomMapMarker
-                      key={i}
-                      imagePath={this.findImage(marker.type)}
-                      onPress={(e) => {this._onPress(e, marker)}}
-                      {...marker}
-                    />
-                </MapView.Callout>
+                  <CustomMapMarker
+                    key={i}
+                    imagePath={this.findImage(marker.type)}
+                    {...marker}
+                  />
               </MapView.Marker>
           })
         }

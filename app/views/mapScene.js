@@ -54,10 +54,6 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
-function randomColor() {
-  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
-
 class MapScene extends Component {
   constructor(props) {
     super(props);

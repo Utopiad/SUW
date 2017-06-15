@@ -13,7 +13,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 1,
     // borderStyle: 'solid',
-    borderColor: '#F00000'
+    borderColor: '#F00000',
+    position: 'absolute',
+    height: 100,
+    width: 65
   },
   text: {
     color: 'blue'

@@ -3,7 +3,8 @@ import {
   ADD_EVENT_FAILURE,
   BEGIN_ADD_EVENT,
   SUBMIT_ADD_EVENT,
-  OPEN_EVENT
+  OPEN_EVENT,
+  BACK_FROM_OPEN_EVENT
 } from '../constants';
 
 const initialState = {
@@ -13,7 +14,9 @@ const initialState = {
   description: '',
   people: 0,
   eventtype: '',
-  hashtag: ''
+  hashtag: '',
+  id: '',
+  id_user: ''
 }
 
 export const eventReducer = (state = initialState, action) => {
@@ -22,7 +25,7 @@ export const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         longitude: action.longitude,
-        latitude: action.latitude
+        latitude: action.latitude,
       };
       break;
     case SUBMIT_ADD_EVENT:
@@ -50,16 +53,31 @@ export const eventReducer = (state = initialState, action) => {
       };
       break;
     case OPEN_EVENT:
-    return {
-      ...state,
-      longitude: action.longitude,
-      latitude: action.latitude,
-      title: action.title,
-      description: action.description,
-      people: action.people,
-      eventtype: action.eventtype,
-      hashtag: action.hashtag
-    }
+      return {
+        ...state,
+        longitude: action.longitude,
+        latitude: action.latitude,
+        title: action.title,
+        description: action.description,
+        people: action.people,
+        eventtype: action.eventtype,
+        hashtag: action.hashtag,
+        id: action.id,
+        id_user: action.id_user
+      }
+    case BACK_FROM_OPEN_EVENT:
+      return {
+        ...state,
+        longitude: initialState.longitude,
+        latitude: initialState.latitude,
+        title: initialState.title,
+        description: initialState.description,
+        people: initialState.people,
+        eventtype: initialState.eventtype,
+        hashtag: initialState.hashtag,
+        id: initialState.id,
+        id_user: initialState.id_user
+      }
     default:
       return state;
   }
