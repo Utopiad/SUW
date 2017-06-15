@@ -38,7 +38,14 @@ export const eventReducer = (state = initialState, action) => {
       break;
     case ADD_EVENT_SUCCESS:
       return {
-
+        ...state,
+        longitude: initialState.longitude,
+        latitude: initialState.latitude,
+        title: initialState.title,
+        description: initialState.description,
+        people: initialState.people,
+        eventtype: initialState.eventtype,
+        hashtag: initialState.hashtag
       };
       break;
     default:

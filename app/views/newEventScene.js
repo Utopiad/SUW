@@ -8,10 +8,10 @@ import {
   Button
 } from 'react-native';
 import {submitEvent} from '../actions/sockets';
-import {submitAddEvent} from '../actions/event';
+import {submitAddEvent, successAddEvent} from '../actions/event';
 import Slider from 'react-native-slider';
 import {connect} from 'react-redux';
-import {Actions} from 'react-native-router-flux';
+import {Actions, ActionConst} from 'react-native-router-flux';
 
 const { width, height } = Dimensions.get('window');
 
@@ -105,6 +105,23 @@ class newEventScene extends Component {
     }
     this.props.submitAddEvent(newevent);
     this.props.submitEvent(newevent, this.props.socketC);
+    Actions.map()
+  }
+
+  backToMap() {
+    const newevent = {
+      people: this.state.people,
+      title: this.state.title,
+      description: this.state.description,
+      hashtag: this.state.hashtag,
+      // eventtype: this.state.eventtype,
+      eventtype: 'party',
+      user_id: this.props.id,
+      longitude: this.props.newEvent.longitude,
+      latitude: this.props.newEvent.latitude
+    }
+    this.props.submitAddEvent(newevent);
+    Actions.map({type: ActionConst.BACK})
   }
 
   render() {
@@ -146,7 +163,12 @@ class newEventScene extends Component {
             style={styles.submit}
             onPress={ () => {this.sendForm()}}
             title="SUBMIT"
-/>
+        />
+        <Button
+            style={styles.submit}
+            onPress={ () => {this.backToMap()}}
+            title="BACK TO MAP"
+        />
       </View>
     )
   }
@@ -178,7 +200,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     submitEvent: (event, socketC) => dispatch(submitEvent(event, socketC)),
-    submitAddEvent: (newEvent) => dispatch(submitAddEvent(newEvent))
+    submitAddEvent: (newEvent) => dispatch(submitAddEvent(newEvent)),
+    successAddEvent: () => dispatch(successAddEvent())
   }
 };
 

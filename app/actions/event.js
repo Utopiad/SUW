@@ -5,8 +5,6 @@ import {
   SUBMIT_ADD_EVENT
 } from '../constants';
 
-import {submitEvent} from './sockets';
-
 export const beginAddEvent = (coords) => {
   return {
     type: BEGIN_ADD_EVENT,
@@ -26,4 +24,10 @@ export const submitAddEvent = (value) => {
     eventtype: value.eventtype,
     hashtag: value.hashtag
   };
+}
+
+export const successAddEvent = () => {
+  return {
+    type: ADD_EVENT_SUCCESS
+  }
 }
