@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {View} from 'react-native';
+import { connect } from 'react-redux';
+import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
+import { Actions } from 'react-native-router-flux';
+import {openEvent} from '../actions/event';
 import CustomMapMarker from '../components/customMapMarker';
+
+
+const styles = StyleSheet.create({
+  callout: {
+    width: 48,
+    height: 48
+  }
+});
 
 class MarkerCollection extends Component {
   constructor(props) {
     super(props);
 
+    this.openEvent = this.props.openEvent.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -55,6 +66,14 @@ class MarkerCollection extends Component {
     }
   }
 
+  _onPress(e, marker) {
+    console.log('_ONPRESS_ ----------------_ONPRESS_');
+    console.log(marker);
+    this.openEvent(marker);
+    // debugger;
+    Actions.eventTouched();
+  }
+
   render() {
     console.log('------- MARKER COLLECTION', this.props.events.collection);
     const {collection} = this.props.events;
@@ -66,17 +85,18 @@ class MarkerCollection extends Component {
               latitude: marker.location[0],
               longitude: marker.location[1],
             };
-            
+
             return <MapView.Marker
-                coordinate={location}
-                key={i}
-                // anchor={{x: -0.5, y: -0.5}}
-              >
-                <CustomMapMarker
+                  coordinate={location}
                   key={i}
-                  imagePath={this.findImage(marker.type)}
-                  {...marker}
-                />
+                  onPress={(e) => {this._onPress(e, marker)}}
+                  // anchor={{x: -0.5, y: -0.5}}
+                >
+                  <CustomMapMarker
+                    key={i}
+                    imagePath={this.findImage(marker.type)}
+                    {...marker}
+                  />
               </MapView.Marker>
           })
         }
@@ -97,4 +117,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(MarkerCollection);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openEvent: (marker) => dispatch(openEvent(marker))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MarkerCollection);

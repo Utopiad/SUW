@@ -9,10 +9,9 @@ import {
 import {getPosition, isNewUser} from '../actions/__user';
 import { socketPushRegionDragged, connectToSocketServer, voteEvent } from '../actions/sockets';
 import {beginAddEvent} from '../actions/event';
-// import {  } from '../actions/sockets';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import MarkerCollection from '../containers/markerCollection';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -60,10 +59,6 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
-
-function randomColor() {
-  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
 
 class MapScene extends Component {
   constructor(props) {

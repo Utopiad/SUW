@@ -10,6 +10,7 @@ import {Router, Scene, NavBar, ActionConst} from 'react-native-router-flux';
 
 import MapScene from './views/mapScene';
 import NewEventScene from './views/newEventScene';
+import EventScene from './views/eventScene';
 
 import {connect} from 'react-redux';
 
@@ -42,6 +43,10 @@ class App extends Component {
           />
           <Scene key="newevent"
             component={NewEventScene}
+            duration={0}
+          />
+          <Scene key="eventTouched"
+            component={EventScene}
             duration={0}
           />
         </Scene>
