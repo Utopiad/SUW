@@ -9,10 +9,9 @@ import {
 import {getPosition, isNewUser} from '../actions/__user';
 import { socketPushRegionDragged, connectToSocketServer, voteEvent } from '../actions/sockets';
 import {beginAddEvent} from '../actions/event';
-// import {  } from '../actions/sockets';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import MarkerCollection from '../containers/markerCollection';
 
 const { width, height } = Dimensions.get('window');

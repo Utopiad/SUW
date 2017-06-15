@@ -10,10 +10,10 @@ import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
   marker: {
-    // borderRadius: 50,
-    // borderWidth: 1,
-    // // borderStyle: 'solid',
-    // borderColor: 'red'
+    borderRadius: 50,
+    borderWidth: 1,
+    // borderStyle: 'solid',
+    borderColor: '#F00000'
   },
   text: {
     color: 'blue'
@@ -60,12 +60,10 @@ class CustomMapMarker extends Component {
     console.log('-------CUSTOM MARKER', this.props);
     const { location, type, imagePath } = this.props;
 
-    // const path = this.findImage(type);
-    // setTimeout
     return (
     <View style={styles.marker}>
       <Image source={imagePath} style={styles.icon} />
-      <View style={styles.arrow}></View>
+      <Image source={require('../assets/img/wave_pin.png')} style={styles.iconStand}/>
     </View>
     );
   }
