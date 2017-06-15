@@ -5,6 +5,7 @@ import {
   SOCKET_NEW_PINS,
   GET_EVENTS_NEARBY_LOCATION
 } from '../constants';
+import _ from 'lodash';
 
 export const socketReducer = ( state = {
   //Initial state
@@ -12,18 +13,7 @@ export const socketReducer = ( state = {
   socketC: null,
   error: null,
   events: {
-    collection: [{
-      name: '',
-      type: '',
-      description: '',
-      numberOfPeople: 0,
-      upvotes: 0,
-      downvotes: 0,
-      location: {
-        latitude: 48.86593862195033,
-        longitude: 2.4298185110092163
-      }
-    }],
+    collection: [],
     last_update: ''
   }
 }, action) => {
@@ -40,26 +30,14 @@ export const socketReducer = ( state = {
       });
       break;
     case GET_EVENTS_NEARBY_LOCATION:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         events: {
-          collection: [
-            ...collection,
-            {
-              name: action.events.name,
-              type: action.events.type,
-              description: action.events.description,
-              numberOfPeople: action.events.numberOfPeople,
-              upvotes: action.events.upvotes,
-              downvotes: action.events.downvotes,
-              location: {
-                latitude: action.events.latitude,
-                longitude: action.events.longitude
-              }
-            }
-          ],
+          collection: action.events,
           last_update: Date.now()
         }
-      });
+      }
+      break;
     default:
       return state;
   }
