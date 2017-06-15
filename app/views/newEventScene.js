@@ -33,17 +33,26 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     left: 20,
-    height: 20
+    height: 25,
+    marginTop: 10
   },
   input: {
     width: width * .8,
-    height: 40,
+    height: 50,
     alignSelf: 'center',
     borderColor: '#ebebeb',
     fontSize: 17
   },
   submit: {
-    alignSelf: 'center',
+    // marginTop: 50,
+    marginLeft: 30,
+    marginBottom: 50
+  },
+  buttonContainer: {
+    flex: 0.2,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   }
 });
 
@@ -150,25 +159,31 @@ class newEventScene extends Component {
             value={this.state.hashtag}
             onChangeText={ (value) => {this.setState({hashtag: value})} }
         />
+        <Text style={styles.label}>about how many people</Text>
         <Slider
-            style={{width: width * .8, height: 40, alignSelf: 'center'}}
+            style={{width: width * .8, height: 20, alignSelf: 'center', marginTop: 20}}
             minimumValue={10}
             maximumValue={2000}
             value={this.props.newEvent.people}
             onValueChange={ (value) => {this.setState({people: value})}}
             step={1}
         />
-        <Text>{this.state.people}</Text>
-        <Button
-            style={styles.submit}
-            onPress={ () => {this.sendForm()}}
-            title="SUBMIT"
-        />
-        <Button
-            style={styles.submit}
-            onPress={ () => {this.backToMap()}}
-            title="BACK TO MAP"
-        />
+        <Text style={styles.label}>{this.state.people}</Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.submit}>
+            <Button
+              onPress={ () => {this.sendForm()}}
+              title="SUBMIT"
+              />
+          </View>
+          <View style={styles.submit}>
+            <Button
+              style={styles.submit}
+              onPress={ () => {this.backToMap()}}
+              title="BACK TO MAP"
+            />
+          </View>
+        </View>
       </View>
     )
   }
