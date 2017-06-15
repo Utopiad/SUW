@@ -5,20 +5,22 @@ import {
   Text
 } from 'react-native';
 import {submitEvent} from '../actions/sockets';
+import {Slider} from 'react-native-slider';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#2EC4B6',
-    alignItems: 'center'
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'flex-start'
   },
   heading: {
     fontSize: 24,
     color: '#2E5077',
-    alignItems: 'center'
+    alignSelf: 'center'
   }
 });
 
@@ -27,7 +29,8 @@ class newEventScene extends Component {
     super(props);
 
     this.state = {
-      isLoading: null
+      isLoading: null,
+      people: 400
     };
   }
 
@@ -62,9 +65,16 @@ class newEventScene extends Component {
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.heading}>CameraView !</Text>
+        <Text style={styles.heading}>create event</Text>
         <Text>Longitude: {this.props.newEvent.position.longitude}</Text>
         <Text>Latitude: {this.props.newEvent.position.latitude}</Text>
+        <Slider
+            style={{width: 300, height: 40}}
+            minimumValue={10}
+            maximumValue={2000}
+            value={this.state.people}
+            onValueChange={ (value) => {this.setState({people: value})}} step={1} />
+        <Text>{this.state.people}</Text>
       </View>
     )
   }
