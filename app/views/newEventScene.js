@@ -19,10 +19,12 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    width: width,
+    height: height * .1,
+    justifyContent: 'center',
     flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'flex-start'
+    backgroundColor: '#f96363',
+    alignItems: 'center'
   },
   heading: {
     fontSize: 24,
@@ -49,9 +51,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   submit: {
-    // marginTop: 50,
-    marginLeft: 30,
-    marginBottom: 50
+    marginBottom: 70,
+    marginRight: 2,
+    marginLeft: 2,
+    flex: 0.49
   },
   buttonContainer: {
     flex: 0.2,
@@ -143,7 +146,9 @@ class newEventScene extends Component {
   render() {
     return(
       <View style={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.heading}>create event</Text>
+      </View>
         <Text style={styles.label}>title</Text>
         <TextInput
           style={styles.input}
@@ -194,16 +199,16 @@ class newEventScene extends Component {
         <View style={styles.buttonContainer}>
           <View style={styles.submit}>
             <Button
-              onPress={ () => {this.sendForm()}}
-              title="SUBMIT"
-              />
-          </View>
-          <View style={styles.submit}>
-            <Button
               style={styles.submit}
               onPress={ () => {this.backToMap()}}
               title="BACK TO MAP"
             />
+          </View>
+          <View style={styles.submit}>
+            <Button
+              onPress={ () => {this.sendForm()}}
+              title="SUBMIT"
+              />
           </View>
         </View>
       </View>
