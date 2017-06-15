@@ -23,6 +23,12 @@ class MarkerCollection extends Component {
     console.log('THE MARKER COLLECTION DID UPDATE !');
   }
 
+  findImage(marker) {
+    const {type} = marker;
+
+    
+  }
+
   render() {
     console.log('------- MARKER COLLECTION', this.props.events.collection);
     const {collection} = this.props.events;
@@ -36,12 +42,18 @@ class MarkerCollection extends Component {
               longitude: marker.location[1],
             };
 
+            const imagePath = this.findImage(marker);
+
             return <MapView.Marker
                 coordinate={location}
                 key={i}
                 // anchor={{x: -0.5, y: -0.5}}
               >
-                <CustomMapMarker key={i} {...marker} />
+                <CustomMapMarker
+                  key={i}
+                  imagePath={imagePath}
+                  {...marker}
+                />
               </MapView.Marker>
           })
         }
