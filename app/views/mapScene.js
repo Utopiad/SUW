@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: '#611C35',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center'
   },
   heading: {
@@ -86,7 +86,6 @@ class MapScene extends Component {
 
   shouldComponentUpdate(nextProps) {
     const {isWatchPositionLaunched} = this.state;
-    console.log(nextProps.connected);
     if(nextProps.isConnectedToSocket && nextProps.connected) {
       return true;
     }

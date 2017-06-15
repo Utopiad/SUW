@@ -5,7 +5,7 @@ import {
   Text,
   View
 } from 'react-native';
-import {Router, Scene, NavBar} from 'react-native-router-flux';
+import {Router, Scene, NavBar, ActionConst} from 'react-native-router-flux';
 // import Swiper from 'react-native-swiper';
 import SplashScreen from 'react-native-splash-screen';
 
