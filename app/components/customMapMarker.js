@@ -16,21 +16,21 @@ const styles = StyleSheet.create({
     // borderColor: 'red'
   },
   text: {
-    color: 'blue'
+    color: '#f96363'
   },
 
   arrow: {
     width: 0,
     height: 0,
 
-    borderLeftWidth: 15,
+    borderLeftWidth: 16,
     borderLeftColor: 'transparent',
 
-    borderRightWidth: 15,
+    borderRightWidth: 16,
     borderRightColor: 'transparent',
 
-    borderTopWidth: 15,
-    borderTopColor: 'blue'
+    borderTopWidth: 16,
+    borderTopColor: '#f96363'
   },
 
   icon: {
