@@ -108,7 +108,7 @@ export const voteEvent = (event, client) => {
       type: event.type,
       nbr_participants: event.nbr_participant
     };
-    console.log(data);
+    console.log('-------USER-'+ data.type, data);
     client.emit('vote_event', data, (response) => {
       console.log(response);
     });

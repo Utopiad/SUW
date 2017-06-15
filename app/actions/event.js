@@ -49,3 +49,9 @@ export const openEvent = (marker) => {
     id: marker.id
   }
 }
+
+export const closeEvent = () => {
+  return {
+    type: BACK_FROM_OPEN_EVENT
+  }
+}

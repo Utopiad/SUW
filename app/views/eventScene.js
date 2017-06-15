@@ -9,6 +9,8 @@ import {
   Picker
 } from 'react-native';
 import Slider from 'react-native-slider';
+import {voteEvent} from '../actions/sockets';
+import {closeEvent} from '../actions/event';
 import { connect } from 'react-redux';
 import { Actions, ActionConst } from 'react-native-router-flux';
 
@@ -25,6 +27,10 @@ const styles = StyleSheet.create({
 class EventScene extends Component {
   constructor(props) {
     super(props);
+
+    this.voteEvent = this.props.voteEvent.bind(this);
+    this._onPress = this._onPress.bind(this);
+    this.closeEvent = this.props.closeEvent.bind(this);
   }
 
   componentDidMount() {
@@ -32,8 +38,18 @@ class EventScene extends Component {
     console.log(this.props.newEvent);
   }
 
-  _onPress() {
-    console.log(this.props.newEvent);
+  _onPress(type) {
+    const {newEvent, socketC, id} = this.props;
+
+    const event = {
+      id_user: id,
+      id_event: newEvent.id,
+      type: type,
+      nbr_participants: newEvent.people
+    };
+    this.voteEvent(event, socketC);
+    this.closeEvent();
+    //
   }
 
   render() {
@@ -51,7 +67,8 @@ class EventScene extends Component {
         <Text>Event id_user : {newEvent.id_user}</Text>
 
         <View>
-          <Button title='onPress' onPress={this._onPress()}></Button>
+          <Button title='YES' onPress={() => this._onPress('upvote')} />
+          <Button title='NO' onPress={() =>this._onPress('downvote')} />
         </View>
       </View>
     );
@@ -59,16 +76,21 @@ class EventScene extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const {newEvent, socket} = state;
-  const {socketC} = socket
+  const {newEvent, socket, user} = state;
+  const {socketC} = socket;
+  const {id} = user;
   return {
     newEvent,
-    socketC
+    socketC,
+    id
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  voteEvent: (event, client) => dispatch(voteEvent(event, client))
+  return {
+    voteEvent: (event, client) => dispatch(voteEvent(event, client)),
+    closeEvent: () => dispatch(closeEvent())
+  }
 }
 
-export default connect(mapStateToProps)(EventScene);
+export default connect(mapStateToProps, mapDispatchToProps)(EventScene);
