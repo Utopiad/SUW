@@ -20,16 +20,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    height: height * .1,
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    backgroundColor: '#f96363',
+    alignItems: 'flex-start'
+  },
+  header: {
+    flex: 0.1,
+    width: width,
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: '#f96363',
     alignItems: 'center'
   },
+  content: {
+    flex: 0.85,
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'flex-start',
+    borderRadius: 10,
+    paddingTop: 30,
+    marginLeft: 3,
+    marginRight: 3
+  },
+  footer: {
+    flex: 0.05,
+    width: width,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end'
+  },
   heading: {
-    fontSize: 24,
-    color: '#2E5077',
-    alignSelf: 'center'
+    fontSize: 17,
+    color: '#FFFFFF',
+    alignSelf: 'center',
+    fontWeight: 'bold'
   },
   label: {
     color: '#000000',
@@ -40,7 +66,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: width * .8,
-    height: 50,
+    height: 45,
     alignSelf: 'center',
     borderColor: '#ebebeb',
     fontSize: 17
@@ -51,16 +77,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   submit: {
-    marginBottom: 70,
+    marginBottom: 20,
     marginRight: 2,
     marginLeft: 2,
-    flex: 0.49
+    flex: 0.49,
+    backgroundColor: '#4c485a',
+    borderRadius: 10
   },
   buttonContainer: {
-    flex: 0.2,
+    flex: 0.1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'flex-end'
   }
 });
 
@@ -146,9 +174,10 @@ class newEventScene extends Component {
   render() {
     return(
       <View style={styles.container}>
-      <View style={styles.container}>
+      <View style={styles.header}>
         <Text style={styles.heading}>create event</Text>
       </View>
+      <View style={styles.content}>
         <Text style={styles.label}>title</Text>
         <TextInput
           style={styles.input}
@@ -191,25 +220,33 @@ class newEventScene extends Component {
           style={{width: width * .8, height: 20, alignSelf: 'center', marginTop: 20}}
           minimumValue={10}
           maximumValue={2000}
+          thumbTintColor={'#f96363'}
+          minimumTrackTintColor={'#f96363'}
+          maximumTrackTintColor={'#ededed'}
           value={this.props.newEvent.people}
           onValueChange={ (value) => {this.setState({people: value})}}
           step={1}
         />
         <Text style={styles.label}>{this.state.people}</Text>
         <View style={styles.buttonContainer}>
-          <View style={styles.submit}>
-            <Button
-              style={styles.submit}
-              onPress={ () => {this.backToMap()}}
-              title="BACK TO MAP"
+        <View style={styles.submit}>
+          <Button
+            style={styles.submit}
+            onPress={ () => {this.backToMap()}}
+            color={'#4c485a'}
+            title="BACK TO MAP"
+          />
+        </View>
+        <View style={styles.submit}>
+          <Button
+            onPress={ () => {this.sendForm()}}
+            color={'#4c485a'}
+            title="SUBMIT"
             />
-          </View>
-          <View style={styles.submit}>
-            <Button
-              onPress={ () => {this.sendForm()}}
-              title="SUBMIT"
-              />
-          </View>
+        </View>
+        </View>
+        </View>
+        <View style={styles.footer}>
         </View>
       </View>
     )

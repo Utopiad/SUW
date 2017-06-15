@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   Text,
-  Dimensions
+  Dimensions,
+  StatusBar
 } from 'react-native';
 import {getPosition, isNewUser} from '../actions/__user';
 import { socketPushRegionDragged, connectToSocketServer, voteEvent } from '../actions/sockets';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f96363',
     alignItems: 'center'
   },
   heading: {
@@ -150,6 +151,10 @@ class MapScene extends Component {
 
     return(
       <View style={styles.container}>
+      <StatusBar
+     backgroundColor="#f96363"
+     barStyle="dark-content"
+   />
         {updatedPosition &&
           <MapView
             region={{
