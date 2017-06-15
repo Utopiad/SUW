@@ -13,20 +13,26 @@ import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
 import MarkerCollection from '../containers/markerCollection';
+import SplashScreen from 'react-native-splash-screen';
 
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     backgroundColor: '#f96363',
     alignItems: 'center'
   },
   heading: {
-    fontSize: 24,
-    color: '#2EC4B6',
-    alignItems: 'center'
+    fontSize: 18,
+    color: '#000000',
+    alignItems: 'center',
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: 'center',
+    lineHeight: 45
   },
   bottom: {
     position: 'absolute',
@@ -69,6 +75,12 @@ class MapScene extends Component {
     // this.user_id = this.props.user_id.bind(this);
     this.socketPushRegionDragged = this.props.socketPushRegionDragged.bind(this);
     this.watchId = null;
+  }
+
+  componentDidMount() {
+    setTimeout(function() {
+      SplashScreen.hide();
+    }, 1000);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -150,6 +162,7 @@ class MapScene extends Component {
         backgroundColor="#f96363"
         barStyle="dark-content"
       />
+      <Text style={styles.heading}>Please, active your GPS, your network, and finally enjoy !</Text>
         {updatedPosition &&
           <MapView
             region={{
