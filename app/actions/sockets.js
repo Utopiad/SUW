@@ -64,12 +64,14 @@ export const socketPushPos = (position, id, client) => {
       speed: position.speed,
       accuracy: position.accuracy,
       user_id: id,
-      distance: 500
+      distance: 6
     };
 
     client.emit('user', data, (response) => {
       // console.log(data);
-      console.log('---response Event for User psition', response);
+      console.log('***********************');
+      console.log('---response Event for User position---', response);
+      console.log('***********************');
       // dispatch(getEvents(response));
     });
 
