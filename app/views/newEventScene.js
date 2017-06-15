@@ -103,7 +103,7 @@ class newEventScene extends Component {
       longitude: this.props.newEvent.longitude,
       latitude: this.props.newEvent.latitude
     }
-    this.props.submitAddEvent(newevent);
+    this.props.successAddEvent();
     this.props.submitEvent(newevent, this.props.socketC);
     Actions.map()
   }
