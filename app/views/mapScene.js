@@ -64,14 +64,6 @@ class MapScene extends Component {
     this.state = {
       region: {},
       isWatchPositionLaunched: false
-      // markers: [{
-      //   key: id,
-      //   coordinate: {
-      //     latitude: 48.86593862195033,
-      //     longitude: 2.4298185110092163
-      //   },
-      //   pinColor: randomColor()
-      // }]
     };
 
     this.map = null;
@@ -114,6 +106,7 @@ class MapScene extends Component {
     const markPosition = e.nativeEvent.coordinate;
     const {socketC, id} = this.props;
 
+    console.log(markPosition);
     /*/
       EVENT UP & DOWN VOTES SOCKET
     /*/
@@ -126,8 +119,8 @@ class MapScene extends Component {
     // };
     // this.props.voteEvent(event, socketC);
 
-    this.props.beginAddEvent(markPosition);
-    Actions.newevent();
+    // this.props.beginAddEvent(markPosition);
+    // Actions.newevent();
   }
 
   componentWillUnMount() {
