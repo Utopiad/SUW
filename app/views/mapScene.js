@@ -106,7 +106,7 @@ class MapScene extends Component {
     const markPosition = e.nativeEvent.coordinate;
     const {socketC, id} = this.props;
 
-    console.log(markPosition);
+    // console.log(markPosition);
     /*/
       EVENT UP & DOWN VOTES SOCKET
     /*/
@@ -119,8 +119,8 @@ class MapScene extends Component {
     // };
     // this.props.voteEvent(event, socketC);
 
-    // this.props.beginAddEvent(markPosition);
-    // Actions.newevent();
+    this.props.beginAddEvent(markPosition);
+    Actions.newevent();
   }
 
   componentWillUnMount() {
@@ -165,8 +165,7 @@ class MapScene extends Component {
             // showsMyLocationButton={true}
             showsUserLocation={true}
             loadingEnabled={true}
-
-            onPress={ (e) => {this.getCoordinates(e)}}
+            onLongPress={ (e) => {this.getCoordinates(e)}}
             onLayout={() => this.map.fitToCoordinates(LatLng, {edgePadding: customEdgePadding, animated: false})}
             onRegionChangeComplete={this.onRegionChange}
             style={styles.map} >

@@ -26,13 +26,12 @@ class MarkerCollection extends Component {
   findImage(marker) {
     const {type} = marker;
 
-    
+
   }
 
   render() {
     console.log('------- MARKER COLLECTION', this.props.events.collection);
     const {collection} = this.props.events;
-
 
     return(
       <View>
