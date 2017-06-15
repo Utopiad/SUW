@@ -59,7 +59,6 @@ class MarkerCollection extends Component {
     console.log('------- MARKER COLLECTION', this.props.events.collection);
     const {collection} = this.props.events;
 
-
     return(
       <View>
         {collection.map((marker, i) => {
