@@ -152,9 +152,9 @@ class MapScene extends Component {
     return(
       <View style={styles.container}>
       <StatusBar
-     backgroundColor="#f96363"
-     barStyle="dark-content"
-   />
+        backgroundColor="#f96363"
+        barStyle="dark-content"
+      />
         {updatedPosition &&
           <MapView
             region={{
