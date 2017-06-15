@@ -5,8 +5,8 @@ import {
   Text,
   Dimensions
 } from 'react-native';
-import {getPosition, user_id} from '../actions/__user';
-import { socketPushRegionDragged, connectToSocketServer } from '../actions/sockets';
+import {getPosition, isNewUser} from '../actions/__user';
+import { socketPushRegionDragged, connectToSocketServer, voteEvent } from '../actions/sockets';
 import {beginAddEvent} from '../actions/event';
 // import {  } from '../actions/sockets';
 import {connect} from 'react-redux';
@@ -84,19 +84,6 @@ class MapScene extends Component {
     this.watchId = null;
   }
 
-
-
-  // () => {
-  //   user_id.then((data)=>{
-  //     console.log("Yes PAPAAAAAAAAAAAA !");
-  //     console.log(data);
-  //     getPosition(data, client);
-  //   }).catch((error)=>{
-  //     console.log("ERRRRRRRRRRRROOOOOOOOOOOOOOOOORRRRRRRRR !");
-  //     console.log(error);
-  //   });
-  // }
-
   shouldComponentUpdate(nextProps) {
     const {isWatchPositionLaunched} = this.state;
     console.log(nextProps.connected);
@@ -109,8 +96,8 @@ class MapScene extends Component {
   componentDidUpdate() {
     const {isWatchPositionLaunched} = this.state;
     const {socketC} = this.props;
-    id++;
-    user_id.then((response)=>{
+
+    isNewUser.then((response)=>{
       if ( !isWatchPositionLaunched ) {
         console.log('COUCOU CA MARCHE');
         console.log(response);
@@ -126,19 +113,22 @@ class MapScene extends Component {
 
   getCoordinates(e) {
     const markPosition = e.nativeEvent.coordinate;
-    // addEvent(markPosition);
+    const {socketC, id} = this.props;
+
+    /*/
+      EVENT UP & DOWN VOTES SOCKET
+    /*/
+    // console.log(id);
+    // const event = {
+    //   id_user: id,
+    //   id_event: '5941bccf68beb4001f91ef9a',
+    //   type: 'downvote',
+    //   nbr_participants: 1000
+    // };
+    // this.props.voteEvent(event, socketC);
+
     this.props.beginAddEvent(markPosition);
     Actions.newevent();
-    // this.setState({
-    //   markers: [
-    //     ...this.state.markers,
-    //     {
-    //       coordinate: markPosition,
-    //       key: id++,
-    //       color: randomColor()
-    //     },
-    //   ],
-    // });
   }
 
   componentWillUnMount() {
@@ -205,12 +195,9 @@ const mapStateToProps = (state) => {
     position,
     updatedPosition,
     profile,
-    connected
-  } = user;
-
-  const {
+    connected,
     id
-  } = profile;
+  } = user;
 
   const {
     isConnectedToSocket,
@@ -233,7 +220,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getPosition: (id, socketC) => dispatch(getPosition(id, socketC)),
     socketPushRegionDragged: (region, id, socketC) => dispatch(socketPushRegionDragged(region, id, socketC)),
-    beginAddEvent: (coords) => dispatch(beginAddEvent(coords))
+    beginAddEvent: (coords) => dispatch(beginAddEvent(coords)),
+    voteEvent: (event, client) => dispatch(voteEvent(event, client))
   }
 }
 
