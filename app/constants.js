@@ -25,7 +25,7 @@ export const ADD_EVENT_FAILURE = 'ADD_EVENT_FAILURE';
 export const OPEN_EVENT = 'OPEN_EVENT';
 export const BACK_FROM_OPEN_EVENT = 'BACK_FROM_OPEN_EVENT';
 
-export const DELAY_HIDE_SPLASHSCREEN = 2000;
+export const DELAY_HIDE_SPLASHSCREEN = 1000;
 
 // export const LOUIS_API = 'http://75ca9186.ngrok.io';
 

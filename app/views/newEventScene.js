@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     flexDirection: 'column',
     backgroundColor: '#f96363',
     alignItems: 'flex-start'
@@ -64,9 +64,16 @@ const styles = StyleSheet.create({
     left: 20,
     height: 25
   },
+  people: {
+    color: '#000000',
+    fontSize: 19,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: 10
+  },
   input: {
     width: width * .8,
-    height: 45,
+    height: 40,
     alignSelf: 'center',
     borderColor: '#ebebeb',
     fontSize: 17
@@ -78,11 +85,19 @@ const styles = StyleSheet.create({
   },
   submit: {
     marginBottom: 20,
-    marginRight: 2,
-    marginLeft: 2,
+    marginRight: 30,
+    marginLeft: 30,
     flex: 0.49,
     backgroundColor: '#4c485a',
     borderRadius: 10
+  },
+  back: {
+    marginTop: 5,
+    marginBottom: 5,
+    width: width * 0.49,
+    backgroundColor: '#4c485a',
+    borderRadius: 10,
+    alignSelf: 'center'
   },
   buttonContainer: {
     flex: 0.1,
@@ -227,26 +242,24 @@ class newEventScene extends Component {
           onValueChange={ (value) => {this.setState({people: value})}}
           step={1}
         />
-        <Text style={styles.label}>{this.state.people}</Text>
+        <Text style={styles.people}>{this.state.people}</Text>
         <View style={styles.buttonContainer}>
         <View style={styles.submit}>
+          <Button
+            onPress={ () => {this.sendForm()}}
+            color={'#53dd85'}
+            title="SUBMIT"
+            />
+        </View>
+        </View>
+        </View>
+        <View style={styles.back}>
           <Button
             style={styles.submit}
             onPress={ () => {this.backToMap()}}
             color={'#4c485a'}
             title="BACK TO MAP"
           />
-        </View>
-        <View style={styles.submit}>
-          <Button
-            onPress={ () => {this.sendForm()}}
-            color={'#4c485a'}
-            title="SUBMIT"
-            />
-        </View>
-        </View>
-        </View>
-        <View style={styles.footer}>
         </View>
       </View>
     )
