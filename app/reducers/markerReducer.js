@@ -1,8 +1,6 @@
 import {
-  ADD_EVENT_SUCCESS,
-  ADD_EVENT_FAILURE,
-  BEGIN_ADD_EVENT,
-  SUBMIT_ADD_EVENT,
+  OPEN_EVENT,
+  BACK_FROM_OPEN_EVENT
 } from '../constants';
 
 const initialState = {
@@ -12,19 +10,14 @@ const initialState = {
   description: '',
   people: 0,
   eventtype: '',
-  hashtag: ''
-}
+  hashtag: '',
+  id: '',
+  id_user: ''
+};
 
-export const eventReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case BEGIN_ADD_EVENT:
-      return {
-        ...state,
-        longitude: action.longitude,
-        latitude: action.latitude,
-      };
-      break;
-    case SUBMIT_ADD_EVENT:
+export const markerReducer = (state = initialState, action) => {
+  switch(action.type) {
+    case OPEN_EVENT:
       return {
         ...state,
         longitude: action.longitude,
@@ -33,10 +26,12 @@ export const eventReducer = (state = initialState, action) => {
         description: action.description,
         people: action.people,
         eventtype: action.eventtype,
-        hashtag: action.hashtag
+        hashtag: action.hashtag,
+        id: action.id,
+        id_user: action.id_user
       };
       break;
-    case ADD_EVENT_SUCCESS:
+    case BACK_FROM_OPEN_EVENT:
       return {
         ...state,
         longitude: initialState.longitude,
@@ -45,7 +40,9 @@ export const eventReducer = (state = initialState, action) => {
         description: initialState.description,
         people: initialState.people,
         eventtype: initialState.eventtype,
-        hashtag: initialState.hashtag
+        hashtag: initialState.hashtag,
+        id: initialState.id,
+        id_user: initialState.id_user
       };
       break;
     default:
