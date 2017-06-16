@@ -14,6 +14,7 @@ import MapView from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
 import MarkerCollection from '../containers/markerCollection';
 import SplashScreen from 'react-native-splash-screen';
+import { DELAY_HIDE_SPLASHSCREEN } from '../constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -31,7 +32,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 20,
     marginRight: 20,
-    textAlign: 'center',
     lineHeight: 45
   },
   bottom: {
@@ -80,7 +80,7 @@ class MapScene extends Component {
   componentDidMount() {
     setTimeout(function() {
       SplashScreen.hide();
-    }, 1000);
+    }, DELAY_HIDE_SPLASHSCREEN);
   }
 
   shouldComponentUpdate(nextProps) {

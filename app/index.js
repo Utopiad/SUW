@@ -6,15 +6,12 @@ import {
   View
 } from 'react-native';
 import {Router, Scene, NavBar, ActionConst} from 'react-native-router-flux';
-// import Swiper from 'react-native-swiper';
 
 import MapScene from './views/mapScene';
 import NewEventScene from './views/newEventScene';
 import EventScene from './views/eventScene';
 
 import {connect} from 'react-redux';
-
-import { DELAY_HIDE_SPLASHSCREEN } from './constants';
 
 const RouterWithRedux = connect()(Router);
 
