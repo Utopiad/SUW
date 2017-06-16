@@ -34,18 +34,17 @@ class EventScene extends Component {
   }
 
   componentDidMount() {
-    //Ouais il faut rename ce reducer
-    console.log(this.props.newEvent);
+    console.log(this.props.marker);
   }
 
   _onPress(type) {
-    const {newEvent, socketC, id} = this.props;
+    const {marker, socketC, id} = this.props;
 
     const event = {
       id_user: id,
-      id_event: newEvent.id,
+      id_event: marker.id,
       type: type,
-      nbr_participants: newEvent.people
+      nbr_participants: marker.people
     };
     this.voteEvent(event, socketC);
     this.closeEvent();
@@ -53,18 +52,18 @@ class EventScene extends Component {
   }
 
   render() {
-    const {newEvent} = this.props;
+    const {marker} = this.props;
     return (
       <View style={styles.container}>
-        <Text>Event id : {newEvent.id}</Text>
-        <Text>Event latitude : {newEvent.latitude}</Text>
-        <Text>Event longitude : {newEvent.longitude}</Text>
-        <Text>Event title : {newEvent.title}</Text>
-        <Text>Event description : {newEvent.description}</Text>
-        <Text>Event people : {newEvent.people}</Text>
-        <Text>Event eventtype : {newEvent.eventtype}</Text>
-        <Text>Event hashtag : {newEvent.hashtag}</Text>
-        <Text>Event id_user : {newEvent.id_user}</Text>
+        <Text>Event id : {marker.id}</Text>
+        <Text>Event latitude : {marker.latitude}</Text>
+        <Text>Event longitude : {marker.longitude}</Text>
+        <Text>Event title : {marker.title}</Text>
+        <Text>Event description : {marker.description}</Text>
+        <Text>Event people : {marker.people}</Text>
+        <Text>Event eventtype : {marker.eventtype}</Text>
+        <Text>Event hashtag : {marker.hashtag}</Text>
+        <Text>Event id_user : {marker.id_user}</Text>
 
         <View>
           <Button title='YES' onPress={() => this._onPress('upvote')} />
@@ -76,11 +75,11 @@ class EventScene extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const {newEvent, socket, user} = state;
+  const {marker, socket, user} = state;
   const {socketC} = socket;
   const {id} = user;
   return {
-    newEvent,
+    marker,
     socketC,
     id
   };
