@@ -8,6 +8,8 @@ import {
   Button
 } from 'react-native';
 import Slider from 'react-native-slider';
+import {voteEvent} from '../actions/sockets';
+import {closeEvent} from '../actions/event';
 import { connect } from 'react-redux';
 import { Actions, ActionConst } from 'react-native-router-flux';
 
@@ -107,15 +109,28 @@ const styles = StyleSheet.create({
 class EventScene extends Component {
   constructor(props) {
     super(props);
+
+    this.voteEvent = this.props.voteEvent.bind(this);
+    this._onPress = this._onPress.bind(this);
+    this.closeEvent = this.props.closeEvent.bind(this);
   }
 
   componentDidMount() {
-    //Ouais il faut rename ce reducer
-    console.log(this.props.newEvent);
+    console.log(this.props.marker);
   }
 
-  _onPress() {
-    console.log(this.props.newEvent);
+  _onPress(type) {
+    const {marker, socketC, id} = this.props;
+
+    const event = {
+      id_user: id,
+      id_event: marker.id,
+      type: type,
+      nbr_participants: marker.people
+    };
+    this.voteEvent(event, socketC);
+    this.closeEvent();
+    //
   }
 
   backToMap() {
@@ -193,16 +208,21 @@ class EventScene extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const {newEvent, socket} = state;
-  const {socketC} = socket
+  const {marker, socket, user} = state;
+  const {socketC} = socket;
+  const {id} = user;
   return {
-    newEvent,
-    socketC
+    marker,
+    socketC,
+    id
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  voteEvent: (event, client) => dispatch(voteEvent(event, client))
+  return {
+    voteEvent: (event, client) => dispatch(voteEvent(event, client)),
+    closeEvent: () => dispatch(closeEvent())
+  }
 }
 
-export default connect(mapStateToProps)(EventScene);
+export default connect(mapStateToProps, mapDispatchToProps)(EventScene);
